@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan&display=swap');
+
+@import url(footer.css);
+
+body {
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: 400;
+
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-family: "jacques francois shadow";
+    font-weight: 400;
+}
+
+h2 {
+    margin: 0;
+}
+
+p {
+    font-family: 'League Spartan', sans-serif;
+}
+
+header {
+    background: rgb(240, 240, 240);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    font-size: 4rem;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+
+/*CASE SPECIFIC*/
+header img {
+    height: 8rem;
+    margin-inline: 1rem;
+}
+
+#patetContainerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-bottom: 5rem;
+
+}
+
+.patetDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    width: 100%;
+}
+
+.patetDiv>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.patetDiv>div:last-child {
+    margin-top: 7rem;
+}
+
+.person {
+    /* background: rgb(240, 240, 240); */
+
+    font-size: 1rem;
+
+    /* min-width: 27rem; */
+    max-width: min-content;
+    height: 14rem;
+    padding:1rem;
+    margin-top: 4rem;
+}
+
+.person h1 {
+    font-size: 3rem;
+    line-break:loose;
+
+    margin: 0;
+}
+
+.person img {
+    /* height:10rem;    */
+    width: 10.6rem;
+    /* margin: 1rem; */
+    object-fit: cover;
+}
+
+.infoImgDiv {
+    display: flex;
+    flex-direction: row;
+
+    height: 11.5rem;
+    /* overflow: hidden; */
+}
+
+.infoDiv {
+    margin-left: 1rem;
+
+}
+
+.infoDiv p {
+    margin: 0;
+    max-width: 15.2rem;
+    min-width: 15.2rem;
+}
+
+.person .postP {
+    width: 10.6rem;
+    text-align: center;
+    margin:0;
+    margin-top: .5rem;
+    font-family: "jacques francois shadow";
+    font-size: 1.3rem;
+}
+
+
+
+
+/*Fika posts*/
+
+#fik {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.postDiv{
+    background-image: url("../img/examplefika.jpg");
+    background-size: cover;
+    background-position: center; 
+
+    width: 50vw;
+    height: 20vw;
+    border: 1px inset black;
+    margin-bottom: 6rem;
+
+    position:relative;
+
+    overflow: hidden;
+}
+
+.postContentDiv{
+    background: rgba(128, 128, 128, 0.724);
+    color: white;
+
+    text-align: center;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    max-width: 50%;
+    padding: 1rem 1rem 0 1rem;
+    border-radius: 0 10px 0px 0px;
+
+    margin-left: -25vw;
+    offset: 100% left;
+
+    transition: all ease-in-out .5s;
+}
+
+.postDiv:hover .postContentDiv{
+    display: block;
+    margin-left: 0;
+    transition: all ease-in-out .5s;
+}

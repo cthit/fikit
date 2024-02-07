@@ -1,0 +1,14 @@
+{
+  "name": "fikit",
+  "version": "1.0.0",
+  "description": "A webpage for FikIT",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erik Persson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

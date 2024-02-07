@@ -1,0 +1,35 @@
+footer {
+    background: rgb(240, 240, 240);
+    text-align: center;
+    font-family: copperplate, sans-serif;
+
+    width: 96vw;
+    padding-inline: 2rem;
+    height: auto;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    margin-top: 4rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+footer h2 {
+    text-align: left;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-bottom: .4rem;
+}
+
+footer img {
+    height: 3rem;
+    width: 3rem;
+    vertical-align: middle;
+}
+
+footer a {
+    color: aqua;
+    text-decoration: none;
+}
