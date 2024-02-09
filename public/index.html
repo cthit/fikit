@@ -7,15 +7,51 @@
     <link rel="icon" href="img/FikIT23_noborder.png" type="image/x-icon">
 
     <link rel="stylesheet" href="css/style.css">
-    <script src="script.js" defer></script>
 
+    <script src="js/script.js" defer></script>
     <script src="js/posts.js" defer></script>
+    <script src="js/login.js" defer></script>
+    <script src="js/createPost.js" defer></script>
 </head>
 <body>
+
+    <div id="loginDiv" class="popupWindow hidden">
+        <div id="closeButton"  class="closeButton"></div>
+
+        <div class="loginForm">
+            <input type="text" id="username" placeholder="Användarnamn" required>
+            <input type="password" id="password" placeholder="Lösenord" required>
+            <button id="submitLoginButton">Logga in</button>
+        </div>
+    </div>
+
+    <div id="createPostDiv" class="createPostDiv popupWindow hidden">
+        <div id="closeButton"  class="closeButton"></div>
+
+        <div id="uploadImageToPost" class="uploadImageToPost">
+            <img id="createPostPreviewImage" src="img/placeholderPreview.svg" alt="preview" height="100">
+            <p for="createPostImageInput">Ladda upp bild</p>
+
+            <input type="file" id="createPostImageInput" accept="image/*" required>
+        </div>
+        <div class="infoInputDiv">
+            <textarea id="createPostTitle" placeholder="Titel"></textarea>
+            <textarea id="createPostDescription" placeholder="Beskrivning"></textarea>
+        </div>
+
+        <div id="createPostSave">Spara</div>
+    </div>
+
+
+
     <header>
-        <!-- <h1 class="invisible">FikIT</h1> -->
         <img src="img/FikIT23_noborder.png" alt="FikIT" height="30">
         <h1>FikIT</h1>
+        
+        <aside class="optionsMenu">        
+            <div id="openCreatePostButton" class="hidden adminButton">Skapa inlägg</div>
+            <div id="openLoginButton">Logga in</div>
+        </aside>
     </header>
 
 

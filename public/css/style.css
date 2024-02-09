@@ -3,6 +3,7 @@
 
 @import url(footer.css);
 
+
 body {
     font-size: 18px;
     font-family: sans-serif;
@@ -31,6 +32,8 @@ header {
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
     width: 100vw;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -42,7 +45,7 @@ header h1 {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .invisible {
@@ -56,6 +59,151 @@ header img {
     margin-inline: 1rem;
 }
 
+/* ------- LOGIN ------- */
+
+/* ------ OPTIONS MENU ------ */
+.optionsMenu {
+    /* background: rgb(103, 205, 92); */
+
+    position: absolute;
+    top: .5rem;
+    right: 1.5rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: .5rem;
+
+    width: auto;
+    /* height: 5rem; */
+    margin: 0;
+}
+.optionsMenu>* {
+    background: darkslategray;
+    color: #fff;
+
+    padding: .4rem;
+    border-radius: .5rem;
+}
+
+.optionsMenu>*:hover {
+    background: rgb(22, 36, 36);
+    cursor: pointer;
+}
+
+.popupWindow{
+    background: rgb(237, 235, 235);
+
+    position: fixed;
+    top: calc(50% - 20vw/2);
+    left: calc(50% - 30vw/2);
+
+    height: 20vw;
+    width: 30vw;
+    min-height: 20rem;
+    min-width: 30rem;
+
+    outline: .4rem solid black;
+    z-index: 1000;
+}
+
+
+#loginDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeButton {
+    background: grey;
+    background-image: url("../img/close.svg");
+    background-size: cover;
+    background-position: center; 
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: .5rem;
+    border-radius: 0 0 0 .3rem;
+}
+
+#loginDiv .loginForm {
+    display: flex;
+    flex-direction: column;
+    gap:.5rem;
+    width: max-content;
+}
+
+/* ------- CREATE POST ------- */
+.createPostDiv {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    /* align-items: center; */
+
+    margin-top: 2rem;
+}
+
+.uploadImageToPost{
+    background: rgb(196, 196, 196);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 40%;
+    height: 100%;
+    border-right: solid 1px black;
+}
+
+#createPostImageInput {
+    display: none;
+}
+
+.infoInputDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+
+    width: 60%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.infoInputDiv>* {
+    width: 80%;
+}
+
+#createPostDescription {
+    height: 50%;
+}
+
+#createPostTitle {
+    height: 10%;
+}
+
+#createPostSave {
+    background: rgba(128, 128, 128, 0.724);
+
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    padding: .3rem;
+    border-radius: .17rem;
+}
+
+
+
+/* ------- PATETER ------- */
+
+
 #patetContainerDiv {
     display: flex;
     justify-content: center;
@@ -63,7 +211,6 @@ header img {
     flex-direction: column;
 
     margin-bottom: 5rem;
-
 }
 
 .patetDiv {

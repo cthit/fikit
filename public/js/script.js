@@ -1,5 +1,14 @@
 
 const sittandeDiv = document.getElementById("patetContainerDiv");
+let closeButtons = document.getElementsByClassName('closeButton');
+
+
+for (const button of closeButtons) {
+  button.addEventListener('click', () => {
+    button.parentNode.classList.toggle('hidden');
+  });
+};
+
 
 function createSinglePatetDiv(sittande, parentDiv) {
     let div = document.createElement("div");
