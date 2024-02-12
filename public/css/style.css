@@ -34,7 +34,7 @@ header {
 
     position: relative;
 
-    width: 100vw;
+    /* width: 100vw; */
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
@@ -67,7 +67,7 @@ header img {
 
     position: absolute;
     top: .5rem;
-    right: 1.5rem;
+    right: 1rem;
 
     display: flex;
     flex-direction: row;
@@ -289,7 +289,7 @@ header img {
 
 /*Fika posts*/
 
-#fik {
+#posts {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -297,7 +297,7 @@ header img {
 }
 
 .postDiv{
-    background-image: url("../img/examplefika.jpg");
+    background-image: url("../img/placeholderPreview.svg");
     background-size: cover;
     background-position: center; 
 

@@ -71,6 +71,15 @@ function credentialsIsValid(username, pass) {
   return false;
 }
 
+export function getUsernameFromAdminKey(adminKey) {
+  let adminKeys = fs.readFileSync('adminKeys.json')
+  adminKeys.forEach(key => {
+    if (key.key === adminKey){
+      return key.username
+    }
+  });
+}
+
 function saveAdminKey(adminKey) {
   const currentDate = new Date().toISOString();
   const adminKeyData = { key: adminKey, date: currentDate };
@@ -88,7 +97,7 @@ function saveAdminKey(adminKey) {
   fs.writeFileSync('adminKeys.json', JSON.stringify(adminKeys, null, 2));
 }
 
-function isAdminKeyValid(adminKey) {
+export function isAdminKeyValid(adminKey) {
   const currentDate = new Date();
   const tenDaysAgo = new Date(currentDate.getTime() - (10 * 24 * 60 * 60 * 1000)); // 10 days ago
   const adminKeys = JSON.parse(fs.readFileSync('adminKeys.json', 'utf8'));
