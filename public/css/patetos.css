@@ -1,0 +1,86 @@
+/* ------- PATETER ------- */
+
+
+#patetContainerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-bottom: 5rem;
+}
+
+.patetDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    width: 100%;
+}
+
+.patetDiv>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.patetDiv>div:last-child {
+    margin-top: 7rem;
+}
+
+.person {
+    /* background: rgb(240, 240, 240); */
+
+    font-size: 1rem;
+
+    /* min-width: 27rem; */
+    max-width: min-content;
+    height: 14rem;
+    padding:1rem;
+    margin-top: 4rem;
+}
+
+.person h3 {
+    font-family: "jacques francois shadow";
+    font-weight: 400;
+    font-size: 3rem;
+    line-break:loose;
+
+    margin: 0;
+}
+
+.person img {
+    /* height:10rem;    */
+    width: 10.6rem;
+    /* margin: 1rem; */
+    object-fit: cover;
+}
+
+.infoImgDiv {
+    display: flex;
+    flex-direction: row;
+
+    height: 11.5rem;
+    /* overflow: hidden; */
+}
+
+.infoDiv {
+    margin-left: 1rem;
+
+}
+
+.infoDiv p {
+    margin: 0;
+    max-width: 15.2rem;
+    min-width: 15.2rem;
+}
+
+.person .postP {
+    width: 10.6rem;
+    text-align: center;
+    margin:0;
+    margin-top: .5rem;
+    font-family: "jacques francois shadow";
+    font-size: 1.3rem;
+}
+
+

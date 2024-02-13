@@ -115,7 +115,7 @@ function createPost(post, parentDiv){
     postDiv.classList.add("postDiv");
 
     if (post.imageName !== undefined){
-        postDiv.style.backgroundImage = "url('" + postImageDirPath + post.imageName + "'), url('../img/placeholderPreview.svg')";
+        postDiv.style.backgroundImage = "url('" + postImageDirPath + post.imageName + "'), url('../img/logos/FikIT.png')";
     }
 
     let postContentDiv = createPostContentDiv(post);
@@ -128,13 +128,13 @@ function createPostContentDiv(post){
     let postContentDiv = document.createElement("div");
     postContentDiv.classList.add("postContentDiv");
 
-    let h2 = document.createElement("h2");
+    let h3 = document.createElement("h3");
     let postP = document.createElement("p");
 
-    h2.textContent = post.title;
+    h3.textContent = post.title;
     postP.textContent = post.description;
 
-    postContentDiv.appendChild(h2);
+    postContentDiv.appendChild(h3);
     postContentDiv.appendChild(postP);
 
     return postContentDiv;

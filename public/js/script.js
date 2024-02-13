@@ -69,13 +69,13 @@ function createInfoDiv(person){
     let infoDiv = document.createElement("div");
     infoDiv.classList.add("infoDiv");
     
-    let h1 = document.createElement("h1");
+    let h3 = document.createElement("h3");
     let description = document.createElement("p");
 
-    infoDiv.appendChild(h1);
+    infoDiv.appendChild(h3);
     infoDiv.appendChild(description);
 
-    h1.textContent = person.nick;
+    h3.textContent = person.nick;
     description.textContent = person.description;
 
     return infoDiv;

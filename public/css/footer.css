@@ -6,6 +6,7 @@ footer {
     height: auto;
     padding-top: 1rem;
     padding-bottom: 2rem;
+    padding-inline: 2rem;
     margin-top: 4rem;
 
     display: flex;
@@ -21,13 +22,18 @@ footer h2 {
     margin-bottom: .4rem;
 }
 
-footer img {
+footer .socialMedia * {
     height: 3rem;
     width: 3rem;
     vertical-align: middle;
 }
 
 footer a {
-    color: aqua;
+    color: rgb(20, 133, 39);
     text-decoration: none;
+}
+
+footer .textImage {
+    height: 1.5rem;
+    vertical-align: bottom;
 }

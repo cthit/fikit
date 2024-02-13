@@ -1,0 +1,130 @@
+/* ------- CREATE POST ------- */
+.createPostDiv {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    /* align-items: center; */
+
+    margin-top: 2rem;
+}
+
+.uploadImageToPost{
+    background: rgb(196, 196, 196);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 40%;
+    height: 100%;
+    border-right: solid 1px black;
+}
+
+#createPostImageInput {
+    display: none;
+}
+
+.infoInputDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+
+    width: 60%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.infoInputDiv>* {
+    width: 80%;
+}
+
+#createPostDescription {
+    height: 50%;
+}
+
+#createPostTitle {
+    height: 10%;
+}
+
+#createPostSave {
+    background: rgba(128, 128, 128, 0.724);
+
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    padding: .3rem;
+    border-radius: .17rem;
+}
+
+
+
+
+/*Fika posts*/
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.posts h2 {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-family: "Protest Revolution", sans-serif;
+}
+
+
+#posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.postDiv{
+    background-image: url("../img/placeholderPreview.svg");
+    background-size: cover;
+    background-position: center; 
+
+    width: 50vw;
+    height: 20vw;
+    border: 1px inset black;
+    margin-bottom: 6rem;
+
+    position:relative;
+
+    overflow: hidden;
+}
+
+.postContentDiv{
+    background: rgba(128, 128, 128, 0.724);
+    color: white;
+
+    text-align: center;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    max-width: 50%;
+    padding: 1rem 1rem 0 1rem;
+    border-radius: 0 10px 0px 0px;
+
+    margin-left: -25vw;
+    offset: 100% left;
+
+    transition: all ease-in-out .5s;
+}
+
+.postDiv:hover .postContentDiv{
+    display: block;
+    margin-left: 0;
+    transition: all ease-in-out .5s;
+}
+
+.postContentDiv p {
+    margin-top: .3rem;
+}
