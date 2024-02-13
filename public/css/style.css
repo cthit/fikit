@@ -13,6 +13,7 @@ body {
     font-family: sans-serif;
     font-weight: 400;
 
+    min-height: 100vh !important;
     padding: 0;
     margin: 0;
 }
@@ -62,6 +63,28 @@ header img {
     height: 8rem;
     margin-inline: 1rem;
 }
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 40%;
+    height: 3rem;
+    margin-bottom: 3rem;
+    margin-inline: auto;
+}
+
+nav a {
+    text-decoration: none;
+    color: grey;
+    font-family: 'Protest Revolution', sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+
+}
+
 
 /* ------- LOGIN ------- */
 

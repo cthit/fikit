@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.patetDiv .yearTitle {
+    text-align: center;
+}
+
 .patetDiv>div {
     display: flex;
     flex-direction: column;

@@ -10,8 +10,10 @@
 
     <script src="js/script.js" defer></script>
     <script src="js/login.js" defer></script>
-    <script src="js/createPost.js" defer></script>
+    <script src="js/posts.js" defer></script>
+    <script src="js/patetos.js" defer></script>
 </head>
+
 <body>
 
     <div id="loginDiv" class="popupWindow hidden">
@@ -41,6 +43,9 @@
         <div id="createPostSave">Spara</div>
     </div>
 
+    <div id="managePatetosDiv" class="popupWindow hidden">
+
+    </div>
 
 
     <header>
@@ -52,17 +57,23 @@
             <div id="openLoginButton">Logga in</div>
         </aside>
     </header>
+    <nav>
+        <a href="#sittande">Sittande</a>
+        <a href="#posts">Inlägg</a>
+        <a href="#patetContainerDiv">Pateter</a>
+        <a href="#footer">Kontakt</a>
+    </nav>
 
 
+    <div id="sittande">
 
-
-    <div id="patetContainerDiv">
     </div>
 
 
-    <section class="posts">
+
+    <section id="posts" class="posts">
         <h2>Inlägg</h2>
-        <div id="posts">
+        <div id="postsContainer">
 
             <!-- <div class="fikaPost">
                 <div class="postContent">
@@ -74,10 +85,12 @@
     </section>
 
 
+    <div id="patetContainerDiv">
+    </div>
 
 
 
-    <footer>
+    <footer id="footer">
         <div class="socialMedia">
             <a href="https://www.instagram.com/fikit_chalmers/">
                 <img src="img/logos/instagram.png" height="40">

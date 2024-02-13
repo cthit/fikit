@@ -25,19 +25,7 @@ userCredentials = JSON.parse(userCredentials); // Parse the JSON string into an 
 let allowedDevices = [];
 
 
-app.post('/getSittande', (req, res) => {
-  const year = req.body.year; // Extract year from request body
-  const filePath = 'patetos/' + year + '.json'; // Construct file path
-  try {
-    let people = fs.readFileSync(filePath, 'utf8'); // Read file synchronously
-    people = JSON.parse(people); // Parse JSON data
-    
-    res.status(200).json({ people }); // Send the content back to the client
-  } catch (err) {
-    console.error('Error reading file:', err);
-    res.status(500).json({ error: 'Failed to retrieve sittande' });
-  }
-});
+
 
 // UPLOAD NEW POST
 app.use('/api', backRouter)
