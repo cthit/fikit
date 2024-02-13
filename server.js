@@ -61,6 +61,15 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.post('/testAdminKey', (req, res) => {
+  const adminKey = req.body.adminKey; // Extract admin key from request body
+  if (isAdminKeyValid(adminKey)) {
+    res.status(200).json("Adminkey is valid");
+  } else {
+    res.status(401).json("Adminkey is not valid");
+  }
+});
+
 function credentialsIsValid(username, pass) {
   for (const user of userCredentials) {
     if (user.name === username && user.password === pass) {

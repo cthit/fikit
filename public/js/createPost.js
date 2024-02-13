@@ -90,7 +90,6 @@ function updateNewsPost() {
         }
     })
     .then(posts => {
-        console.log(posts);
         postParentDiv.innerHTML = "";
         posts.forEach(post => {
             createPost(post, postParentDiv);

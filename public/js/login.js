@@ -8,17 +8,31 @@ const passwordInput = document.getElementById('password');
 
 let adminButtons = document.getElementsByClassName('adminButton');
 
+let isLoggedIn = false;
 let adminKey = null;
 let username = null;
 
 
 
 loginButton.addEventListener('click', () => {
-    loginDiv.classList.toggle('hidden');
+    if (!isLoggedIn) {
+        loginDiv.classList.remove('hidden');
+        console.log('loginDiv is now visible');
+    } else {
+        logout();
+    }
 });
 
 
-
+function logout() {
+    isLoggedIn = false;
+    adminKey = null;
+    localStorage.removeItem('adminKey');
+    for (const button of adminButtons) {
+        button.classList.add('hidden');
+    }
+    loginButton.textContent = 'Logga in';
+}
 
 function login() {
     const loginCredentials = {
@@ -40,15 +54,50 @@ function login() {
         return response.json();
     })
     .then(data => {
-        console.log("Login successful");
         adminKey = data.adminKey;
         username = usernameInput.value;
+
+        localStorage.setItem('adminKey', adminKey);
+        console.log("Login successful");
+
         userIsLoggedIn();
+        
     })
 }
 
+function testAdminKeyOnLoad() {
+    adminKey = localStorage.getItem('adminKey');
+    console.log('adminKey: ', adminKey);
+    if (adminKey) {
+        fetch('/testAdminKey', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({adminKey})
+        })
+        .then(response => {
+            if (response.status === 200) {
+                console.log('Admin key is valid');
+                userIsLoggedIn();
+            }
+            if (response.status === 401) {
+                localStorage.removeItem('adminKey');
+            } else if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response;
+        }) 
+    }
+}
+
+
 function userIsLoggedIn(){
+    isLoggedIn = true;
     loginDiv.classList.add('hidden');   
+    
+    loginButton.textContent = 'Logga ut';
+
     usernameInput.value = '';
     passwordInput.value = '';
 
@@ -57,4 +106,7 @@ function userIsLoggedIn(){
     }
 };
 
+
+
 submitLoginButton.addEventListener('click', login);
+testAdminKeyOnLoad();
