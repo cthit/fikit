@@ -1,27 +1,6 @@
 
 const sittandeDiv = document.getElementById("sittande");
-const patetosDiv = document.getElementById("patetContainerDiv");
-
-let managePatetosDiv = document.getElementById('managePatetosDiv');
-
-
-function populateManagePatetosDiv(){
-  fetch('/api/getAllPatetos')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    data.forEach(patet => {
-      createSinglePatetDiv(patet, managePatetosDiv);
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
-}
+const patetosDiv = document.getElementById("managePatetosDiv");
 
 
 
@@ -158,3 +137,7 @@ function getSittande(){
 
 getAllPatetos();
 getSittande();
+
+
+
+

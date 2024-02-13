@@ -17,7 +17,7 @@
 <body>
 
     <div id="loginDiv" class="popupWindow hidden">
-        <div id="closeButton"  class="closeButton"></div>
+        <div class="closeButton"></div>
 
         <div class="loginForm">
             <input type="text" id="username" placeholder="Användarnamn" required>
@@ -27,7 +27,7 @@
     </div>
 
     <div id="createPostDiv" class="createPostDiv popupWindow hidden">
-        <div id="closeButton"  class="closeButton"></div>
+        <div class="closeButton"></div>
 
         <div id="uploadImageToPost" class="uploadImageToPost">
             <img id="createPostPreviewImage" src="img/placeholderPreview.svg" alt="preview" height="100">
@@ -43,16 +43,40 @@
         <div id="createPostSave">Spara</div>
     </div>
 
-    <div id="managePatetosDiv" class="popupWindow hidden">
 
+
+
+    <div id="managePatetosYears" class="popupWindow">
+        <div class="closeButton"></div>
+
+        <div id="managePatetosDiv">
+
+        </div>      
+    </div>
+
+    <div id="managePersonDiv" class="popupWindow hidden">
+        <div id="closeButton"  class="closeButton"></div>
+
+        <div id="patetosContainer">
+            <div id="createPatetoDiv" class="createPatetoDiv">
+                <h2>Skapa patet</h2>
+                <input type="text" id="createPatetoName" placeholder="Namn" required>
+                <input type="text" id="createPatetoDescription" placeholder="Nick" required>
+                <input type="text" id="createPatetoPrice" placeholder="Post" required>
+                <input type="text" id="createPatetoImage" placeholder="Beskrivning" required>
+                <button id="createPatetoButton">Skapa</button>
+            </div>
+        </div>
     </div>
 
 
     <header>
+        
         <img src="img/FikIT23_noborder.png" alt="FikIT" height="30">
         <h1>FikIT</h1>
         
         <aside class="optionsMenu">        
+            <div id="openManagePatetosButton" class="hidden adminButton">Hantera pateter</div>
             <div id="openCreatePostButton" class="hidden adminButton">Skapa inlägg</div>
             <div id="openLoginButton">Logga in</div>
         </aside>

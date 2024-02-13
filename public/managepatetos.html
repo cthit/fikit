@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+
+    <title>FikIT</title>
+    <link rel="icon" href="img/FikIT23_noborder.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/script.js" defer></script>
+    <script src="js/managePatetos.js" defer></script>
+</head>
+
+<body>
+
+    <div id="loginDiv" class="popupWindow hidden">
+        <div class="closeButton"></div>
+
+        <div class="loginForm">
+            <input type="text" id="username" placeholder="Användarnamn" required>
+            <input type="password" id="password" placeholder="Lösenord" required>
+            <button id="submitLoginButton">Logga in</button>
+        </div>
+    </div>
+
+
+
+    <header>
+        <img src="img/FikIT23_noborder.png" alt="FikIT" height="30">
+        <h1>FikIT</h1>
+        
+        <aside class="optionsMenu">        
+            <div id="openManagePatetosButton" class="hidden adminButton">Hantera pateter</div>
+            <div id="openCreatePostButton" class="hidden adminButton">Skapa inlägg</div>
+            <div id="openLoginButton">Logga in</div>
+        </aside>
+    </header>
+    
+
+
+    <div id="managePatetosYears" class="managePatetosYears">
+
+        <div id="managePatetosDiv">
+
+        </div>      
+    </div>
+
+
+
+
+
+
+
+    <footer id="footer">
+        <div class="socialMedia">
+            <a href="https://www.instagram.com/fikit_chalmers/">
+                <img src="img/logos/instagram.png" height="40">
+            </a>
+            <a href="https://wiki.chalmers.it/index.php/FikIT">
+                <img src="img/logos/it.svg" height="40">
+            </a>
+        </div>
+        <div>
+            <p>Skapad av 
+                <a href= https://github.com/erikpersson0884>Göken
+                <img src="img/Goken-pa-market.png" class="textImage" alt="Göken på märket" height="40">
+                </a>
+            </p>
+        </div>
+
+        <div>
+            <!-- <h2>Kontankt</h2> -->
+            <a href="mailto:fikit@chalmers.it">fikit@chalmers.it</a>
+
+        </div>
+    </footer>
+</body>

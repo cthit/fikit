@@ -8,7 +8,6 @@ import * as path from 'path';
 const backRouter = Router();
 
 backRouter.post('/uploadPost',upload.single('postImage'), (req, res) => {
-	console.log(req.body);
 	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 	// if (!req.file) return res.status(400).send('Missing image file');
 
@@ -31,6 +30,12 @@ backRouter.get('/getPosts', (req, res) => {
 	let activePosts = fs.readFileSync('public/posts.json');
 	activePosts = JSON.parse(activePosts);
 	res.status(200).send(activePosts);
+});
+
+backRouter.get('/getAllPeople', (req, res) => {
+	let allPatetos = fs.readFileSync('patetos.json');
+	allPatetos = JSON.parse(allPatetos);
+	res.status(200).send(allPatetos);
 });
 
 backRouter.get('/getAllPatetos', (req, res) => {
@@ -69,15 +74,29 @@ backRouter.post('/removePersonFromPatetos', (req, res) => {
 	allPatetos = JSON.parse(allPatetos);
 	
 	let yearEntry = allPatetos.find(entry => entry.year === year); // Corrected typo here
-	console.log(yearEntry);
-	
 	yearEntry.people = yearEntry.people.filter(Nperson => (Nperson.nick !== person.nick) && (Nperson.name !== person.name));
-	console.log(yearEntry);
 	
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Person removed from patetos");
-
 });
+
+backRouter.post('/updatePerson', (req, res) => {
+	let oldPerson = req.body.oldPerson;
+	let newPerson = req.body.newPerson;
+	let year = req.body.year;
+
+	let allPatetos = fs.readFileSync('patetos.json');
+	allPatetos = JSON.parse(allPatetos);
+
+	let yearEntry = allPatetos.find(entry => entry.year === year);
+	let personIndex = yearEntry.people.findIndex(person => person.nick === oldPerson.nick);
+	yearEntry.people[personIndex] = newPerson;
+
+	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
+	res.status(200).send("Person updated in patetos");
+});
+
+
 
 backRouter.post('/addNewYearOfPatetos', (req, res) => {
 	let newYear = req.body.year;
@@ -93,5 +112,15 @@ backRouter.post('/addNewYearOfPatetos', (req, res) => {
 	res.status(200).send("Year added to patetos");
 });
 
+backRouter.post('/removeYearOfPatetos', (req, res) => {
+	let year = req.body.year;
+	
+	let allPatetos = fs.readFileSync('patetos.json');
+	allPatetos = JSON.parse(allPatetos);
+	
+	allPatetos = allPatetos.filter(entry => entry.year !== year);
+	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
+	res.status(200).send("Year removed from patetos");
+});
 
 export default backRouter;

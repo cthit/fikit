@@ -88,3 +88,101 @@
 }
 
 
+
+
+
+/* MANAGE PATETOS */
+.managePatetosYears {
+    padding: .5rem;
+    padding-top: 3rem;
+}
+
+.manageYearDiv {
+    margin-bottom: 1rem;
+}
+
+.manageYearOverviewDiv {
+    background: rgb(240, 240, 240);
+    color: #000;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    
+    padding: .5rem;
+    padding-inline: 2rem;
+}
+
+.manageYearOverviewDiv>* {
+    flex: 1;
+}
+
+
+.moodifyYearButton {
+    /* background: grey; */
+    cursor: pointer;
+}
+
+.managePeopleDiv {
+    background: rgba(189, 189, 189, 0.502);
+
+    min-height: 3.5rem;
+    padding-inline: 2rem;
+}
+
+.singleManagePersonDiv {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+
+    padding-bottom: 1rem;
+    border-bottom: .1rem solid #fff;
+    padding-top: 1rem;
+}
+
+.singleManagePersonDiv * {
+    background-color: rgb(233, 233, 233);
+
+    text-align: center;
+    
+    flex: 1;
+
+    width: auto;
+    height: 2rem;
+    max-width: 20rem;
+    border: none;
+}
+
+.removeYearButton {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+
+    height: 4rem;
+
+}
+
+.changePersonControllButtons {
+    background: none;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    height: 3rem;
+    width: 3rem;
+}
+
+.changePersonControllButtons *:active{
+    color: red;
+    transform: rotate(-5deg);
+    transform: scale(1.1);
+
+    transition: all .1s ease;  
+}
