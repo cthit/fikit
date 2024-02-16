@@ -2,11 +2,21 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&family=Vast+Shadow&display=swap');
+
 @import url(patetos.css);
 @import url(posts.css);
 @import url(footer.css);
 
 
+/* Reset */
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* General */
 
 body {
     font-size: 18px;
@@ -16,6 +26,8 @@ body {
     min-height: 100vh !important;
     padding: 0;
     margin: 0;
+
+    overflow: scroll; /* or overflow-y: scroll; for vertical scrollbar only */
 }
 
 h1 {
@@ -43,6 +55,11 @@ header {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
+
+header .pageTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;}
 
 header h1 {
     font-size: 4rem;
@@ -166,3 +183,14 @@ nav a {
     width: max-content;
 }
 
+.easteregg {
+    opacity: 0;
+    position: absolute;
+    bottom: 8%;
+    right: 3%;
+}
+
+.easteregg:hover {
+    cursor: pointer;
+    opacity: 100;
+}

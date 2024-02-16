@@ -41,7 +41,7 @@ app.post('/login', (req, res) => {
 
   if (credentialsIsValid(username, password)) {
     let adminKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    saveAdminKey(adminKey);
+    saveAdminKey(adminKey, username);
     console.log('Admin key:', adminKey);
     res.status(200).json({ adminKey }); // Send the content back to the client
   } else {
@@ -77,9 +77,9 @@ export function getUsernameFromAdminKey(adminKey) {
   });
 }
 
-function saveAdminKey(adminKey) {
+function saveAdminKey(adminKey, username) {
   const currentDate = new Date().toISOString();
-  const adminKeyData = { key: adminKey, date: currentDate };
+  const adminKeyData = { key: adminKey, username: username, date: currentDate };
 
   // Read existing admin keys from file, or create an empty array if the file doesn't exist
   let adminKeys = [];

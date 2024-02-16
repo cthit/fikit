@@ -1,6 +1,6 @@
 
 const sittandeDiv = document.getElementById("sittande");
-const patetosDiv = document.getElementById("managePatetosDiv");
+const patetosDiv = document.getElementById("patetContainerDiv");
 
 
 

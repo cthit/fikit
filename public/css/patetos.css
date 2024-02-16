@@ -18,9 +18,9 @@
     width: 100%;
 }
 
-.patetDiv .yearTitle {
+/* .patetDiv .yearTitle {
     text-align: center;
-}
+} */
 
 .patetDiv>div {
     display: flex;
@@ -101,30 +101,50 @@
     margin-bottom: 1rem;
 }
 
+.addNewYearDiv {
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
 .manageYearOverviewDiv {
-    background: rgb(240, 240, 240);
+    background: #f0f0f0;
     color: #000;
+
+    /* font-size: 1.4rem; */
 
     cursor: pointer;
 
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
     gap: 3rem;
     
     padding: .5rem;
-    padding-inline: 2rem;
+    padding-inline: 2.75rem;
 }
 
 .manageYearOverviewDiv>* {
-    flex: 1;
+    /* flex: 1; */
 }
 
+.managePatetosYears .manageYearYearTitle{
+    width: 6rem;
+}
 
-.moodifyYearButton {
-    /* background: grey; */
+.controlButtons {
+    margin-left: auto;
+}
+
+.controlButtons>* { 
     cursor: pointer;
 }
+
+
 
 .managePeopleDiv {
     background: rgba(189, 189, 189, 0.502);
@@ -136,11 +156,15 @@
 .singleManagePersonDiv {
     display: flex;
     flex-direction: row;
-    gap: 3rem;
+    gap: 2rem;
 
     padding-bottom: 1rem;
     border-bottom: .1rem solid #fff;
     padding-top: 1rem;
+}
+
+.changedPerson {
+    background: #559b6468;
 }
 
 .singleManagePersonDiv * {
@@ -152,34 +176,31 @@
 
     width: auto;
     height: 2rem;
-    max-width: 20rem;
+    max-width: 20vw;
     border: none;
 }
 
-.removeYearButton {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-
+.singleManagePersonDiv textarea {
+    flex: 5;
+    resize: none;
     height: 4rem;
+    max-width: 20vw;
 
 }
 
-.changePersonControllButtons {
+.controlButtons {
     background: none;
-
-    cursor: pointer;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     flex-direction: row;
+    gap: 1rem;
+
 
     height: 3rem;
-    width: 3rem;
 }
 
-.changePersonControllButtons *:active{
+.changePersoncontrolButtons *:active{
     color: red;
     transform: rotate(-5deg);
     transform: scale(1.1);

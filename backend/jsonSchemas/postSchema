@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "imageName": {
+        "type": "string"
+      },
+      "postId": {
+        "type": "string"
+      },
+      "creationDate": {
+        "type": "integer"
+      },
+      "createdBy": {
+        "type": "string"
+      }
+    },
+    "required": ["title", "description", "imageName", "postId", "creationDate"],
+  }
+  
