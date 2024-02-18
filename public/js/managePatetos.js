@@ -63,12 +63,10 @@ function createAddNewYearDiv(){
         console.log("Year already exists");
       } else if (!response.ok) {
             throw new Error('Network response was not ok');
-      }
-      return response;
-    })
-    .then(data => {
+      } else {
       let newDiv = createSingleManagePatetDiv(newYear);
       managePatetosDiv.appendChild(newDiv);
+      }
     })
     .catch(error => {
         console.error('Error fetching data:', error);
@@ -122,11 +120,7 @@ function createYearOverviewDiv(year, managePeopleDiv){
     doneButton.classList.add("changeYearDoneButton");
     doneButton.classList.add("hidden");
     doneButton.addEventListener('click', async () => {
-      // let newPs = switchPtoInput(year, yearTitle, yearNickname, overviewDiv);
-      // yearTitle = newPs[0];
-      // yearNickname = newPs[1];
-
-      managePeopleDiv.classList.toggle('hidden');
+      // managePeopleDiv.classList.toggle('hidden');
       doneButton.classList.toggle('hidden');
       changeExpandIcon(managePeopleDiv, modifyYearButton);
     });
@@ -137,7 +131,7 @@ function createYearOverviewDiv(year, managePeopleDiv){
 
     overviewDiv.appendChild(controlButtons);
 
-    [yearTitle, yearNickname, doneButton].forEach(element => {
+    [yearTitle, yearNickname].forEach(element => {
       stopPropagation(element);
     });
 
@@ -264,16 +258,22 @@ function createRemoveYearButton(year){
 
 
 function createManagePeopleDiv(year){
-  let yearPeople = document.createElement("div");
+  let managePeopleDiv = document.createElement("div");
+  managePeopleDiv.classList.add("hidden");
 
+  let yearPeopleDiv = document.createElement("div");
   year.people.forEach(person => {
-    yearPeople.appendChild(createManagePersonDiv(person, year, yearPeople));
+    yearPeopleDiv.appendChild(createManagePersonDiv(person, year, yearPeopleDiv));
   });
 
-  yearPeople.classList.add("managePeopleDiv");
-  yearPeople.classList.add("hidden");
+  yearPeopleDiv.classList.add("managePeopleDiv");
 
-  return yearPeople
+  let addPersonDiv = createAddPersonDiv(year.year);
+  
+  managePeopleDiv.appendChild(yearPeopleDiv);
+  managePeopleDiv.appendChild(addPersonDiv);
+
+  return managePeopleDiv
 }
 
 
@@ -342,7 +342,7 @@ function CreateChangePersonDoneButton(name, nick, post, description, person, yea
     return doneButton;
 }
 
-function CreateRemovePersonButton(person, year, parentdiv){
+function CreateRemovePersonButton(person, year){
   let removeButton = document.createElement("img");
   removeButton.src = "/img/remove.svg";
   removeButton.alt = "Removebutton";
@@ -360,7 +360,9 @@ function CreateRemovePersonButton(person, year, parentdiv){
           if (!response.ok) {
               throw new Error('Network response was not ok');
           }
-          parentdiv.removeChild(removeButton.parentElement);
+          console.log(removeButton.parentElement.parentElement.parentElement);
+          console.log(removeButton.parentElement.parentElement);
+          removeButton.parentElement.parentElement.parentElement.removeChild(removeButton.parentElement.parentElement);
       })
       .catch(error => {
           console.error('Error fetching data:', error);
@@ -369,6 +371,48 @@ function CreateRemovePersonButton(person, year, parentdiv){
 
   return removeButton;
 } 
+
+function createAddPersonDiv(year){
+  let div = document.createElement("div");
+  div.classList.add("addPersonDiv");
+
+  let addPersonButton = document.createElement("img");
+  addPersonButton.src = "/img/add.svg";
+  addPersonButton.alt = "Addbutton";
+  
+  let newPerson = {
+    "name": "Name",
+    "nick": "Nick",
+    "post": "Post",
+    "description": "Description"
+  };
+
+  addPersonButton.addEventListener('click', () => {
+    fetch('/api/addPersonToPatetos', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({adminKey: adminKey, newPerson: newPerson, year: year})
+    })
+    .then(response => {
+      if (response.status === 409) {
+        console.log("Person already exists");
+      } else if (!response.ok) {
+            throw new Error('Network response was not ok');
+      } else {
+      let newDiv = createManagePersonDiv(newPerson, year, div.parentElement);
+      div.parentElement.appendChild(newDiv);
+      }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+  });
+  div.appendChild(addPersonButton );
+
+  return div;
+}
 
 
 function flashDiv(div, time){

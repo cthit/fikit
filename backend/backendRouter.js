@@ -57,16 +57,20 @@ backRouter.get('/getSittande', (req, res) => {
 
 backRouter.post('/addPersonToPatetos', (req, res) => {
 	let adminKey = req.body.adminKey;
-	let newPerson = req.body.person;
+	let newPerson = req.body.newPerson;
 	let year = req.body.year;
 
 	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
+	if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid person data format");
+	console.log(newPerson);
 
 	let allPatetos = fs.readFileSync('patetos.json');
 	allPatetos = JSON.parse(allPatetos);
 
 	let yearEntry = allPatetos.find(entry => entry.year === year);
+	console.log(yearEntry);
 	yearEntry.people.push(newPerson);
+	console.log(yearEntry)
 
     fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Person added to patetos");
@@ -115,11 +119,10 @@ backRouter.post('/updatePerson', (req, res) => {
 
 backRouter.post('/addNewYearOfPatetos', (req, res) => {
 	let adminKey = req.body.adminKey;
+	let newYear = req.body.newYear;
 	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-
-	let newYear = req.body;
 	if (!validateJSONPatetYear(newYear)) return res.status(400).send("Invalid year data format");
-	
+
 	let allPatetos = fs.readFileSync('patetos.json');
 	allPatetos = JSON.parse(allPatetos);
 
@@ -135,7 +138,7 @@ backRouter.post('/removeYearOfPatetos', (req, res) => {
 	let year = req.body.year;
 
 	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPatetYear(newYear)) return res.status(400).send("Invalid year data format");
+	if (!validateJSONPatetYear(year)) return res.status(400).send("Invalid year data format");
 
 	let allPatetos = fs.readFileSync('patetos.json');
 	allPatetos = JSON.parse(allPatetos);

@@ -20,6 +20,6 @@
         "type": "string"
       }
     },
-    "required": ["title", "description", "imageName", "postId", "creationDate"],
+    "required": ["title", "description", "imageName", "postId", "creationDate"]
   }
   
