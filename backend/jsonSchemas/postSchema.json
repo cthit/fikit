@@ -1,6 +1,9 @@
 {
     "type": "object",
     "properties": {
+      "id": {
+        "type": "integer"
+      },
       "title": {
         "type": "string"
       },
@@ -8,9 +11,6 @@
         "type": "string"
       },
       "imageName": {
-        "type": "string"
-      },
-      "postId": {
         "type": "string"
       },
       "creationDate": {

@@ -41,6 +41,7 @@ function createNewPost(){
 function uploadNewPost(post) {
     const formData = new FormData();
     formData.append('postImage', createPostImageInput.files[0]);
+    formData.append('id', createRandomSuffix());
     formData.append('title', createPostTitle.value);
     formData.append('description', createPostDescription.value);
     formData.append('user', username);

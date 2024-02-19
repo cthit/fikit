@@ -109,6 +109,7 @@ function getAllPatetos() {
     return response.json();
   })
   .then(data => {
+    console.log(data);
     populatePatetosDiv(data);
   })
   .catch(error => {
@@ -120,14 +121,23 @@ function getAllPatetos() {
 function getSittande(){
   fetch('/api/getSittande')
   .then(response => {
-    if (!response.ok) {
+    if (response.ok) {
+      return response.json();
+    } 
+    else if (response.status === 404) {
+      console.log("WALLA")
+      return [];
+    } 
+    else {
       throw new Error('Network response was not ok');
     }
-    return response.json();
   })
   .then(data => {
-    populateSittandeDiv(data.people);
-    // console.log(data);
+    if (data.length !== 0) {
+      populateSittandeDiv(data.people);
+    } else {
+      console.log("No sittande found");
+    }
   })
   .catch(error => {
     console.error('Error fetching data:', error);

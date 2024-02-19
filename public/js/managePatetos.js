@@ -43,14 +43,15 @@ function createAddNewYearDiv(){
   let addNewYearButton = document.createElement("img");
   addNewYearButton.src = "/img/add.svg";
   addNewYearButton.alt = "Addbutton";
-  
-  let newYear = {
-    "year": "New Year",
-    "nickname": "Nickname",
-    "people": []
-  };
 
   addNewYearButton.addEventListener('click', () => {
+    let newYear = {
+      "id": createRandomSuffix(),
+      "year": "New Year",
+      "nickname": "Nickname",
+      "people": []
+    };
+
     fetch('/api/addNewYearOfPatetos', {
       method: 'POST',
       headers: {
@@ -192,6 +193,7 @@ async function switchInputToP(year, yearTitle, yearNickname, overviewDiv){
 async function updateYearHeader(year, yearTitle, yearNickname, div){
   
   let newYear = {
+    "id": year.id,
     "year": yearTitle,
     "nickname": yearNickname,
     "people": year.people
@@ -241,13 +243,13 @@ function createRemoveYearButton(year){
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({adminKey: adminKey, year: year.year}),
+        body: JSON.stringify({adminKey: adminKey, year: year}),
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        managePatetosDiv.removeChild(removeYearButton.parentElement.parentElement);})
+        removeYearButton.parentElement.parentElement.parentElement.removeChild(removeYearButton.parentElement.parentElement);})
     .catch(error => {
         console.error('Error fetching data:', error);
     });
@@ -268,7 +270,7 @@ function createManagePeopleDiv(year){
 
   yearPeopleDiv.classList.add("managePeopleDiv");
 
-  let addPersonDiv = createAddPersonDiv(year.year);
+  let addPersonDiv = createAddPersonDiv(year, yearPeopleDiv);
   
   managePeopleDiv.appendChild(yearPeopleDiv);
   managePeopleDiv.appendChild(addPersonDiv);
@@ -326,7 +328,7 @@ function CreateChangePersonDoneButton(name, nick, post, description, person, yea
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({adminKey : adminKey, oldPerson: person, newPerson: newPerson, year: year.year}),
+            body: JSON.stringify({adminKey : adminKey, oldPerson: person, newPerson: newPerson, year: year}),
         })
         .then(response => {
             if (!response.ok) {
@@ -354,7 +356,7 @@ function CreateRemovePersonButton(person, year){
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({adminKey: adminKey, person: person, year: year.year}),
+          body: JSON.stringify({adminKey: adminKey, person: person, year: year}),
       })
       .then(response => {
           if (!response.ok) {
@@ -372,28 +374,29 @@ function CreateRemovePersonButton(person, year){
   return removeButton;
 } 
 
-function createAddPersonDiv(year){
-  let div = document.createElement("div");
-  div.classList.add("addPersonDiv");
+function createAddPersonDiv(year, managePeopleDiv){
+  let addPersonDiv = document.createElement("div");
+  addPersonDiv.classList.add("addPersonDiv");
 
   let addPersonButton = document.createElement("img");
   addPersonButton.src = "/img/add.svg";
   addPersonButton.alt = "Addbutton";
-  
-  let newPerson = {
-    "name": "Name",
-    "nick": "Nick",
-    "post": "Post",
-    "description": "Description"
-  };
 
   addPersonButton.addEventListener('click', () => {
+    let newPerson = {
+      "id": createRandomSuffix(),
+      "name": "Name",
+      "nick": "Nick",
+      "post": "Post",
+      "description": "Description"
+    };
+
     fetch('/api/addPersonToPatetos', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify({adminKey: adminKey, newPerson: newPerson, year: year})
+      body: JSON.stringify({adminKey: adminKey, newPerson: newPerson, year})
     })
     .then(response => {
       if (response.status === 409) {
@@ -401,17 +404,17 @@ function createAddPersonDiv(year){
       } else if (!response.ok) {
             throw new Error('Network response was not ok');
       } else {
-      let newDiv = createManagePersonDiv(newPerson, year, div.parentElement);
-      div.parentElement.appendChild(newDiv);
+        let newDiv = createManagePersonDiv(newPerson, year.year, addPersonDiv.parentElement);
+        managePeopleDiv.appendChild(newDiv);
       }
     })
     .catch(error => {
         console.error('Error fetching data:', error);
     });
   });
-  div.appendChild(addPersonButton );
+  addPersonDiv.appendChild(addPersonButton );
 
-  return div;
+  return addPersonDiv;
 }
 
 
@@ -420,6 +423,11 @@ function flashDiv(div, time){
   setTimeout(function() {
       div.classList.remove("changedPerson");
   }, time); // milliseconds
+}
+
+function createRandomSuffix(){
+  let uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+  return uniqueSuffix;
 }
 
 getManagePatetos();

@@ -1,6 +1,7 @@
 {
     "type": "object",
     "properties": {
+        "id": { "type": "integer"},
         "year": { "type": "string" },
         "nickname": { "type": "string" },
         "people": {
