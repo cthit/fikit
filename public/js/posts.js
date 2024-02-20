@@ -1,3 +1,6 @@
+// import { createRandomSuffix } from './randomSuffix.js';
+
+
 
 const createPostTitle = document.getElementById('createPostTitle');
 const createPostDescription = document.getElementById('createPostDescription');

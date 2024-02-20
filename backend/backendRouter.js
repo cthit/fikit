@@ -82,8 +82,6 @@ backRouter.post('/addPersonToPatetos', (req, res) => {
 	let yearEntry = allPatetos.find(entry => entry.id === year.id);
 	yearEntry.people.push(newPerson);
 
-	console.log(yearEntry.people);
-
     fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Person added to patetos");
 });
@@ -120,9 +118,9 @@ backRouter.post('/updatePerson', (req, res) => {
 	allPatetos = JSON.parse(allPatetos);
 
 	let yearEntry = allPatetos.find(entry => entry.id === year.id);
+
 	let personIndex = yearEntry.people.findIndex(person => person.id === newPerson.id);
 	yearEntry.people[personIndex] = newPerson;
-	console.log(newPerson);
 
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Person updated in patetos");

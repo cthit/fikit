@@ -8,3 +8,8 @@ for (const button of closeButtons) {
   });
 };
 
+
+function createRandomSuffix(){
+  let uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+  return uniqueSuffix;
+}

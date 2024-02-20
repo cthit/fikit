@@ -8,7 +8,9 @@ const patetosDiv = document.getElementById("patetContainerDiv");
 function populatePatetosDiv(years){
   patetosDiv.innerHTML = "";
   years.forEach(year => {
-    createSinglePatetDiv(year.people, year.year, patetosDiv);
+    if (year.people.length === 0){return;} else{
+      createSinglePatetDiv(year.people, year.year, patetosDiv);
+    }
   });
 }
 
@@ -95,6 +97,7 @@ function createInfoDiv(person){
 
 
 function populateSittandeDiv(sittande){
+
   createSinglePatetDiv(sittande, "Sittande", sittandeDiv);
 }
 
@@ -109,7 +112,6 @@ function getAllPatetos() {
     return response.json();
   })
   .then(data => {
-    console.log(data);
     populatePatetosDiv(data);
   })
   .catch(error => {
@@ -125,7 +127,6 @@ function getSittande(){
       return response.json();
     } 
     else if (response.status === 404) {
-      console.log("WALLA")
       return [];
     } 
     else {

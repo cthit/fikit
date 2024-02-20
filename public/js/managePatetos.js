@@ -114,19 +114,6 @@ function createYearOverviewDiv(year, managePeopleDiv){
     modifyYearButton.alt = "ModifyYearbutton";
     modifyYearButton.classList.add("modifyYearButton");
   
-  
-    let doneButton = document.createElement("img");
-    doneButton.src = "/img/checkmark.svg";
-    doneButton.alt = "Donebutton";
-    doneButton.classList.add("changeYearDoneButton");
-    doneButton.classList.add("hidden");
-    doneButton.addEventListener('click', async () => {
-      // managePeopleDiv.classList.toggle('hidden');
-      doneButton.classList.toggle('hidden');
-      changeExpandIcon(managePeopleDiv, modifyYearButton);
-    });
-  
-    controlButtons.appendChild(doneButton);
     controlButtons.appendChild(modifyYearButton);
     controlButtons.appendChild(removeYearButton);
 
@@ -151,7 +138,6 @@ function createYearOverviewDiv(year, managePeopleDiv){
       stopPropagation(yearNickname);
 
       managePeopleDiv.classList.toggle('hidden');
-      doneButton.classList.toggle('hidden');
       changeExpandIcon(managePeopleDiv, modifyYearButton);
     });
 
@@ -222,9 +208,8 @@ function changeExpandIcon(managePeopleDiv, modifyYearButton){
   if(managePeopleDiv.classList.contains('hidden')){
     modifyYearButton.src = "/img/down.svg";
   } else {
-    modifyYearButton.src = "/img/icons/up.svg";
+    modifyYearButton.src = "/img/checkmark.svg";
   }
-
 }
 
 
@@ -305,7 +290,7 @@ function createManagePersonDiv(person, year, parentdiv) {
       });
     });
 
-    let doneButton = CreateChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year);
+    let doneButton = createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year);
     let removeButton = CreateRemovePersonButton(person, year, parentdiv);
     let controlButtons = document.createElement("div");
     controlButtons.classList.add("controlButtons");
@@ -316,7 +301,7 @@ function createManagePersonDiv(person, year, parentdiv) {
     return div;
 }
 
-function CreateChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year){
+function createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year){
   let doneButton = document.createElement("img");
     doneButton.src = "/img/checkmark.svg";
     doneButton.alt = "Donebutton";
@@ -335,7 +320,7 @@ function CreateChangePersonDoneButton(nameInput, nickInput, postInput, descripti
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({adminKey : adminKey, oldPerson: person, newPerson: newPerson, year: year}),
+            body: JSON.stringify({adminKey : adminKey, newPerson: newPerson, year: year}),
         })
         .then(response => {
             if (!response.ok) {
@@ -369,8 +354,6 @@ function CreateRemovePersonButton(person, year){
           if (!response.ok) {
               throw new Error('Network response was not ok');
           }
-          console.log(removeButton.parentElement.parentElement.parentElement);
-          console.log(removeButton.parentElement.parentElement);
           removeButton.parentElement.parentElement.parentElement.removeChild(removeButton.parentElement.parentElement);
       })
       .catch(error => {
@@ -411,7 +394,7 @@ function createAddPersonDiv(year, managePeopleDiv){
       } else if (!response.ok) {
             throw new Error('Network response was not ok');
       } else {
-        let newDiv = createManagePersonDiv(newPerson, year.year, addPersonDiv.parentElement);
+        let newDiv = createManagePersonDiv(newPerson, year, addPersonDiv.parentElement);
         managePeopleDiv.appendChild(newDiv);
       }
     })
@@ -432,9 +415,5 @@ function flashDiv(div, time){
   }, time); // milliseconds
 }
 
-function createRandomSuffix(){
-  let uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-  return uniqueSuffix;
-}
 
 getManagePatetos();

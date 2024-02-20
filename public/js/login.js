@@ -17,7 +17,6 @@ let username = null;
 loginButton.addEventListener('click', () => {
     if (!isLoggedIn) {
         loginDiv.classList.remove('hidden');
-        console.log('loginDiv is now visible');
     } else {
         logout();
     }
@@ -67,7 +66,7 @@ function login() {
 
 function testAdminKeyOnLoad() {
     adminKey = localStorage.getItem('adminKey');
-    console.log('adminKey: ', adminKey);
+    // console.log('adminKey: ', adminKey);
     if (adminKey) {
         fetch('/testAdminKey', {
             method: 'POST',
@@ -78,7 +77,6 @@ function testAdminKeyOnLoad() {
         })
         .then(response => {
             if (response.status === 200) {
-                console.log('Admin key is valid');
                 userIsLoggedIn();
             }
             if (response.status === 401) {
