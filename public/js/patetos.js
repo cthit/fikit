@@ -63,13 +63,13 @@ function createInfoImgDiv(person){
   let infoImgDiv = document.createElement("div");
 
   let img = document.createElement("img");
-  let imageUrl = 'img/profilePictures/' + person.nick + '.jpg';
+  img.src = 'img/profilePictures/' + person.nick + '.jpg';
+  img.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
+
   img.onerror = function(){
     img.src = 'img/logos/FikIT.png';
     img.style.border = "3px solid black";
-    // img.style.borderRadius = ".1rem";
   };
-  img.src = imageUrl;
 
   infoImgDiv.appendChild(img);
 

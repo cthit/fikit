@@ -184,6 +184,10 @@
     padding-top: 1rem;
 }
 
+.singleManagePersonDiv .changedField {
+    outline: 3px solid rgba(180, 0, 0, 0.8);
+}
+
 .changedPerson {
     background: #559b6468;
 }

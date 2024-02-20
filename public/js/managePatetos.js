@@ -285,8 +285,7 @@ function createManagePersonDiv(person, year, parentdiv) {
 
     [nameInput, nickInput, postInput, descriptionTextArea].forEach(element => {
       element.addEventListener('change', () => {
-        // element.style.backgroundColor = "rgba(50, 0, 0, 0.5)";
-        element.style.outline = "3px solid rgba(180, 0, 0, 0.8)";
+        element.classList.add("changedField");
       });
     });
 
@@ -327,6 +326,7 @@ function createChangePersonDoneButton(nameInput, nickInput, postInput, descripti
                 throw new Error('Network response was not ok');
             }
             flashDiv(doneButton.parentElement.parentElement, 100);
+
           })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -413,6 +413,17 @@ function flashDiv(div, time){
   setTimeout(function() {
       div.classList.remove("changedPerson");
   }, time); // milliseconds
+
+  
+  const children = div.querySelectorAll('*');
+  // Loop through each child element
+  children.forEach(child => {
+      // Check if the child element has the specified class
+      if (child.classList.contains("changedField")) {
+          // If the child element has the class, remove it
+          child.classList.remove("changedField");
+      }
+  });
 }
 
 
