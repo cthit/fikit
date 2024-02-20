@@ -66,7 +66,7 @@ backRouter.get('/getSittande', (req, res) => {
 	if (allPatetos.length === 0) return res.status(404).send("No sittande found");
 	let sittande = allPatetos[0];
 	res.status(200).send(sittande);
-});
+});	
 
 backRouter.post('/addPersonToPatetos', (req, res) => {
 	let adminKey = req.body.adminKey;
@@ -108,13 +108,11 @@ backRouter.post('/removePersonFromPatetos', (req, res) => {
 });
 
 backRouter.post('/updatePerson', (req, res) => {
-	let oldPerson = req.body.oldPerson;
 	let newPerson = req.body.newPerson;
 	let year = req.body.year;
 	let adminKey = req.body.adminKey;
 
 	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPerson(oldPerson)) return res.status(400).send("Invalid old person data format");
 	if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid mew person data format");
 
 
@@ -122,9 +120,9 @@ backRouter.post('/updatePerson', (req, res) => {
 	allPatetos = JSON.parse(allPatetos);
 
 	let yearEntry = allPatetos.find(entry => entry.id === year.id);
-	let personIndex = yearEntry.people.findIndex(person => person.id === oldPerson.id);
-	console.log(personIndex);
+	let personIndex = yearEntry.people.findIndex(person => person.id === newPerson.id);
 	yearEntry.people[personIndex] = newPerson;
+	console.log(newPerson);
 
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Person updated in patetos");
@@ -144,6 +142,8 @@ backRouter.post('/addNewYearOfPatetos', (req, res) => {
 	if (allPatetos.find(entry => entry.id === newYear.id)) return res.status(409).send("Year already exists");
 
 	allPatetos.push(newYear);
+	allPatetos = sortYears(allPatetos);
+
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Year added to patetos");
 });
@@ -159,27 +159,57 @@ backRouter.post('/removeYearOfPatetos', (req, res) => {
 	allPatetos = JSON.parse(allPatetos);
 	
 	allPatetos = allPatetos.filter(entry => entry.id !== year.id);
+	allPatetos = sortYears(allPatetos);
+
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Year removed from patetos");
 });
 
 backRouter.post('/updateYearOfPatetos', (req, res) => {
-	let oldYear = req.body.oldYear;
 	let newYear = req.body.newYear;
 	let adminKey = req.body.adminKey;
 
 	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
 	if (!validateJSONPatetYear(newYear)) return res.status(400).send("Invalid year data format");
-	if (newYear.year === undefined || newYear.nickname === undefined || newYear.people === undefined) return res.status(400).send("Data cannot be null");
+	if (newYear.year === undefined || newYear.nickname === undefined) return res.status(400).send("Data cannot be null");
 	
 	let allPatetos = fs.readFileSync('patetos.json');
 	allPatetos = JSON.parse(allPatetos);
 	
-	let yearIndex = allPatetos.findIndex(entry => entry.id === oldYear.id);
-	allPatetos[yearIndex] = newYear;
+	let yearIndex = allPatetos.findIndex(entry => entry.id === newYear.id);
+	allPatetos[yearIndex].year = newYear.year;
+	allPatetos[yearIndex].nickname = newYear.nickname;
+
+	allPatetos = sortYears(allPatetos);
 
 	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
 	res.status(200).send("Year updated in patetos");
 });
+
+
+function sortYears(patetos) {
+	patetos.sort((a, b) => {
+		const yearA = parseInt(a.year);
+		const yearB = parseInt(b.year);
+	
+		// Check if either year is NaN (not a number)
+		if (isNaN(yearA) && isNaN(yearB)) {
+			// If both are not numbers, compare them as strings
+			return a.year.localeCompare(b.year);
+		} else if (isNaN(yearA)) {
+			// If yearA is not a number, it should come after yearB
+			return 1;
+		} else if (isNaN(yearB)) {
+			// If yearB is not a number, it should come before yearA
+			return -1;
+		} else {
+			// Both years are numbers, compare them as numbers
+			return yearA - yearB;
+		}
+	});
+
+
+	return patetos;
+}
 
 export default backRouter;

@@ -37,14 +37,14 @@ function populateManagePatetosDiv(years) {
 }
 
 function createAddNewYearDiv(){
-  let div = document.createElement("div");
-  div.classList.add("addNewYearDiv");
+  let addYearDiv = document.createElement("div");
+  addYearDiv.classList.add("addNewYearDiv");
 
   let addNewYearButton = document.createElement("img");
   addNewYearButton.src = "/img/add.svg";
   addNewYearButton.alt = "Addbutton";
 
-  addNewYearButton.addEventListener('click', () => {
+  addYearDiv.addEventListener('click', () => {
     let newYear = {
       "id": createRandomSuffix(),
       "year": "New Year",
@@ -73,9 +73,9 @@ function createAddNewYearDiv(){
         console.error('Error fetching data:', error);
     });
   });
-  div.appendChild(addNewYearButton);
+  addYearDiv.appendChild(addNewYearButton);
 
-  return div;
+  return addYearDiv;
 }
 
 function createSingleManagePatetDiv(year){
@@ -196,7 +196,6 @@ async function updateYearHeader(year, yearTitle, yearNickname, div){
     "id": year.id,
     "year": yearTitle,
     "nickname": yearNickname,
-    "people": year.people
   };
   try {
     const response = await fetch('/api/updateYearOfPatetos', {
@@ -283,23 +282,30 @@ function createManagePersonDiv(person, year, parentdiv) {
     let div = document.createElement("div");
     div.classList.add("singleManagePersonDiv");
 
-    let name = document.createElement("input");
-    name.value = person.name;
-    div.appendChild(name);
+    let nameInput = document.createElement("input");
+    nameInput.value = person.name;
+    div.appendChild(nameInput);
 
-    let nick = document.createElement("input");
-    nick.value = person.nick;
-    div.appendChild(nick);
+    let nickInput = document.createElement("input");
+    nickInput.value = person.nick;
+    div.appendChild(nickInput);
 
-    let post = document.createElement("input");
-    post.value = person.post;
-    div.appendChild(post);
+    let postInput = document.createElement("input");
+    postInput.value = person.post;
+    div.appendChild(postInput);
 
-    let description = document.createElement("textarea");
-    description.value = person.description;
-    div.appendChild(description);
+    let descriptionTextArea = document.createElement("textarea");
+    descriptionTextArea.value = person.description;
+    div.appendChild(descriptionTextArea);
 
-    let doneButton = CreateChangePersonDoneButton(name, nick, post, description, person, year);
+    [nameInput, nickInput, postInput, descriptionTextArea].forEach(element => {
+      element.addEventListener('change', () => {
+        // element.style.backgroundColor = "rgba(50, 0, 0, 0.5)";
+        element.style.outline = "3px solid rgba(180, 0, 0, 0.8)";
+      });
+    });
+
+    let doneButton = CreateChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year);
     let removeButton = CreateRemovePersonButton(person, year, parentdiv);
     let controlButtons = document.createElement("div");
     controlButtons.classList.add("controlButtons");
@@ -310,7 +316,7 @@ function createManagePersonDiv(person, year, parentdiv) {
     return div;
 }
 
-function CreateChangePersonDoneButton(name, nick, post, description, person, year){
+function CreateChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year){
   let doneButton = document.createElement("img");
     doneButton.src = "/img/checkmark.svg";
     doneButton.alt = "Donebutton";
@@ -318,10 +324,11 @@ function CreateChangePersonDoneButton(name, nick, post, description, person, yea
 
     doneButton.addEventListener('click', () => {
         let newPerson = {
-            name: name.value,
-            nick: nick.value,
-            post: post.value,
-            description: description.value
+            id: person.id,
+            name: nameInput.value,
+            nick: nickInput.value,
+            post: postInput.value,
+            description: descriptionTextArea.value
         }
         fetch('/api/updatePerson', {
             method: 'POST',

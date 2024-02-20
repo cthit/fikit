@@ -95,7 +95,17 @@
 .managePatetosYears {
     padding: .5rem;
     padding-top: 3rem;
+
+        
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
 }
+
+.managePatetosYears>* {
+    width: 90%;}
 
 .manageYearDiv {
     margin-bottom: 1rem;
