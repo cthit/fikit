@@ -2,14 +2,29 @@
 {
     "name": "FikIT",
     "short_name": "FikIT",
+    "description": "A brief description of your web application",
+    "lang": "sv",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f5f5",
+    "theme_color": "#00897b",
+    "categories": ["Chalmers", "Fika", "Student"],
+    "author": {
+        "name": "Erik Persson",
+        "email": "erpersson1005@gmail.com",
+        "url": "https://github.com/erikpersson0884"
+      },
+      "developer": {
+        "name": "Erik Persson",
+        "email": "erikpersson1005@gmail.com",
+        "url": "https://github.com/erikpersson0884"
+      },
     "icons": [
-      {
-        "src": "img/logos/FikIT.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      }
-    ],
-    "start_url": "/index.html",
-    "display": "standalone"
+        {
+            "src": "img/logos/FikIT.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
   }
   

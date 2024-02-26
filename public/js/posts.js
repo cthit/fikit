@@ -1,5 +1,6 @@
 // import { createRandomSuffix } from './randomSuffix.js';
 
+let postImageDirPath = "postImages/";
 
 
 const createPostTitle = document.getElementById('createPostTitle');
@@ -13,7 +14,6 @@ const createPostPreviewImage = document.getElementById('createPostPreviewImage')
 const createPostSave = document.getElementById('createPostSave');
 let postParentDiv =document.getElementById("postsContainer");
 
-let postImageDirPath = "postImages/"
 
 openCreatePostButton.addEventListener('click', () => { 
     createPostDiv.classList.toggle('hidden');
@@ -115,15 +115,28 @@ updateNewsPost()
 
 
 function createPost(post, parentDiv){
+    let primaryImage = postImageDirPath + post.imageName;
+    let fallbackImage = 'img/logos/fikit.png';
+
     let postDiv = document.createElement("div");
     postDiv.classList.add("postDiv");
 
-    if (post.imageName !== undefined){
-        postDiv.style.backgroundImage = "url('" + postImageDirPath + post.imageName + "'), url('../img/logos/FikIT.png')";
-    }
+    postDiv.style.backgroundImage = 'url("' + primaryImage + '")';
+
+    imageExists(primaryImage, function(exists) {
+        if (!exists) {
+            postDiv.style.backgroundImage = 'url("' + fallbackImage + '")';
+            postDiv.style.backgroundSize = 'contain';
+            postDiv.style.backgroundRepeat = 'no-repeat';
+        }
+    });
+          
 
     let postContentDiv = createPostContentDiv(post);
     postDiv.appendChild(postContentDiv);
+
+    let removePostButton = createRemovePostButton(post);
+    postDiv.appendChild(removePostButton);
 
     parentDiv.appendChild(postDiv);
 }
@@ -142,4 +155,67 @@ function createPostContentDiv(post){
     postContentDiv.appendChild(postP);
 
     return postContentDiv;
+}
+
+function createRemovePostButton(post){
+    let removePostButton = document.createElement("div");
+    removePostButton.classList.add("removePostButton");
+    if (!isLoggedIn){
+        removePostButton.classList.add("hidden");
+    }
+
+    let removeImg = document.createElement("img");
+    removeImg.src = "../img/remove.svg";
+    removePostButton.appendChild(removeImg);
+
+
+    removePostButton.addEventListener("click", () => {
+        let data = {
+            post: post,
+            adminKey: adminKey
+        };
+        
+        fetch('/api/removePost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Post removed successfully!');
+            }
+            else {
+                throw new Error('Network response was not ok');
+            }
+            return response;
+        })
+        .then(posts => {
+            updateNewsPost();
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    });
+    return removePostButton;
+}
+
+// Function to check if the primary image fails to load
+function imageExists(url, callback) {'t'
+    var img = new Image();
+    img.onload = function() { callback(true); };
+    img.onerror = function() { callback(false); };
+    img.src = url;
+}
+
+function toggleRemovePostButton(){
+    let removePostButtons = document.getElementsByClassName("removePostButton");
+    for (let button of removePostButtons){
+        if (isLoggedIn) {
+            button.classList.remove("hidden");
+        } else {
+            button.classList.add("hidden");
+        }
+    }
 }

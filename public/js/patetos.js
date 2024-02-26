@@ -15,19 +15,25 @@ function populatePatetosDiv(years){
 }
 
 function createSinglePatetDiv(sittande, year, parentDiv) {
-  let div = document.createElement("div");
-  div.classList.add("patetDiv");
+  let patetDivContainer = document.createElement("div");
+  patetDivContainer.classList.add("patetDivContainer");
 
   let yearTitle = document.createElement("h2");
   yearTitle.textContent = year;
   yearTitle.classList.add("yearTitle");
-  div.appendChild(yearTitle);
+
+  let patetDiv = document.createElement("div");
+  patetDiv.classList.add("patetDiv");
+
+
 
   let leftDiv = document.createElement("div");
   leftDiv.classList.add("patetSlide");
   let rightDiv = document.createElement("div");
   rightDiv.classList.add("patetSlide");
   let amountOfPeople = 0;
+
+  leftDiv.appendChild(yearTitle);
 
   sittande.forEach(element => {
     let person = createSittande(element);
@@ -40,9 +46,11 @@ function createSinglePatetDiv(sittande, year, parentDiv) {
     amountOfPeople++;
   });
   
-  div.appendChild(leftDiv);
-  div.appendChild(rightDiv);
-  parentDiv.appendChild(div);
+  patetDiv.appendChild(leftDiv);
+  patetDiv.appendChild(rightDiv);
+
+  patetDivContainer.appendChild(patetDiv);
+  parentDiv.appendChild(patetDivContainer);
 }
 
 function createSittande(person){
@@ -97,7 +105,6 @@ function createInfoDiv(person){
 
 
 function populateSittandeDiv(sittande){
-
   createSinglePatetDiv(sittande, "Sittande", sittandeDiv);
 }
 

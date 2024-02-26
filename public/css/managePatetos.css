@@ -1,0 +1,142 @@
+
+/* MANAGE PATETOS */
+.managePatetosYears {
+    padding: .5rem;
+    padding-top: 3rem;
+
+        
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.managePatetosYears>* {
+    width: 90%;}
+
+.manageYearDiv {
+    margin-bottom: 1rem;
+}
+
+.addNewYearDiv, .addPersonDiv {
+    background: #f0f0f0;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    height: 2rem;
+    width: 80%;
+    border-bottom-right-radius: 12rem;
+    border-bottom-left-radius: 12rem;
+    margin-inline: auto;
+}
+
+.addPersonDiv {
+    margin-bottom: 3rem;
+}
+
+.manageYearOverviewDiv {
+    background: #f0f0f0;
+    color: #000;
+
+    /* font-size: 1.4rem; */
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+    
+    padding: .5rem;
+    padding-inline: 2.75rem;
+}
+
+.manageYearOverviewDiv>* {
+    /* flex: 1; */
+}
+
+.managePatetosYears .manageYearYearTitle{
+    width: 6rem;
+}
+
+.controlButtons {
+    margin-left: auto;
+}
+
+.controlButtons>* { 
+    cursor: pointer;
+}
+
+
+
+.managePeopleDiv {
+    background: rgba(189, 189, 189, 0.502);
+
+    min-height: 3.5rem;
+    padding-inline: 2rem;
+}
+
+.singleManagePersonDiv {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+
+    padding-bottom: 1rem;
+    border-bottom: .1rem solid #fff;
+    padding-top: 1rem;
+}
+
+.singleManagePersonDiv .changedField {
+    outline: 3px solid rgba(180, 0, 0, 0.8);
+}
+
+.changedPerson {
+    background: #559b6468;
+}
+
+.singleManagePersonDiv * {
+    background-color: rgb(233, 233, 233);
+
+    text-align: center;
+    
+    flex: 1;
+
+    width: auto;
+    height: 2rem;
+    max-width: 20vw;
+    border: none;
+}
+
+.singleManagePersonDiv textarea {
+    flex: 5;
+    resize: none;
+    height: 4rem;
+    max-width: 20vw;
+
+}
+
+.controlButtons {
+    background: none;
+
+    display: flex;
+    justify-content: right;
+    flex-direction: row;
+    gap: 1rem;
+
+
+    height: 3rem;
+}
+
+.changePersoncontrolButtons *:active{
+    color: red;
+    transform: rotate(-5deg);
+    transform: scale(1.1);
+
+    transition: all .1s ease;  
+}

@@ -17,7 +17,7 @@ backRouter.post('/uploadPost',upload.single('postImage'), (req, res) => {
 		title : req.body.title,
 		description : req.body.description,
 		imageName : path.basename(req.file.filename),
-		postId : Date.now() + '-' + Math.round(Math.random() * 1E9),
+		id : Date.now() + '-' + Math.round(Math.random() * 1E9),
 		creationDate : Date.now(),
 		createdBy : getUsernameFromAdminKey(req.body.adminKey)
 	}
@@ -31,11 +31,12 @@ backRouter.post('/uploadPost',upload.single('postImage'), (req, res) => {
 backRouter.post('/removePost', (req, res) => {
 	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	let postId = req.body.postId;
+	let id = req.body.post.id;
 
 	let allPosts = fs.readFileSync('public/posts.json');
 	allPosts = JSON.parse(allPosts);
-	allPosts = allPosts.filter(post => post.postId !== postId);
+	allPosts = allPosts.filter(post => post.id !== id);
+	// console.log(allPosts[0].);	
 	fs.writeFileSync('public/posts.json', JSON.stringify(allPosts, null, 2));
 	
 	res.status(200).send("Post removed successfully!");
@@ -202,7 +203,7 @@ function sortYears(patetos) {
 			return -1;
 		} else {
 			// Both years are numbers, compare them as numbers
-			return yearA - yearB;
+			return yearB - yearA;
 		}
 	});
 

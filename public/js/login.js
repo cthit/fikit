@@ -31,6 +31,7 @@ function logout() {
         button.classList.add('hidden');
     }
     loginButton.textContent = 'Logga in';
+    toggleRemovePostButton();
 }
 
 function login() {
@@ -102,6 +103,8 @@ function userIsLoggedIn(){
     for (const button of adminButtons) { // show all admin buttons
         button.classList.remove('hidden');
     }
+
+    toggleRemovePostButton();
 };
 
 

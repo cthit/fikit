@@ -3,7 +3,8 @@ footer {
     text-align: center;
     font-family: copperplate, sans-serif;
 
-    height: auto;
+    height: 4rem;
+    width: calc(100% - 4rem);
     padding-top: 1rem;
     padding-bottom: 2rem;
     padding-inline: 2rem;
@@ -12,7 +13,12 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    
+    /* position: relative; */
+    /* bottom: 0; */
+    /* width: 100%; */
+    position: absolute;
+    bottom: 0;
 }
 
 footer h2 {

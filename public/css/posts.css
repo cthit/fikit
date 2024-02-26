@@ -85,7 +85,7 @@
 }
 
 .postDiv{
-    background-image: url("../img/placeholderPreview.svg");
+    background-image: url("../img/logos/fikit.png");
     background-size: cover;
     background-position: center; 
 
@@ -127,4 +127,29 @@
 
 .postContentDiv p {
     margin-top: .3rem;
+}
+
+.removePostButton {
+    opacity: 0;
+
+    background: rgb(255, 95, 95);
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 3rem;
+    height: 3rem;
+    padding: 0 0 .3rem .3rem;
+    border-bottom-left-radius: 3rem;
+}
+
+.postDiv:hover .removePostButton {
+    opacity: 0.8;
 }
