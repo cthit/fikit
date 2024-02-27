@@ -71,13 +71,14 @@ function createInfoImgDiv(person){
   let infoImgDiv = document.createElement("div");
 
   let img = document.createElement("img");
-  img.src = 'img/profilePictures/' + person.nick + '.jpg';
-  img.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
-
-  img.onerror = function(){
+  if (person.profileImageName && person.profileImageName !== undefined) {
+    img.src = 'img/profileImages/' + person.profileImageName;
+  } else {
     img.src = 'img/logos/FikIT.png';
     img.style.border = "3px solid black";
-  };
+
+  }
+  img.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
 
   infoImgDiv.appendChild(img);
 

@@ -41,7 +41,7 @@ function createAddNewYearDiv(){
   addYearDiv.classList.add("addNewYearDiv");
 
   let addNewYearButton = document.createElement("img");
-  addNewYearButton.src = "/img/add.svg";
+  addNewYearButton.src = "/img/icons/add.svg";
   addNewYearButton.alt = "Addbutton";
 
   addYearDiv.addEventListener('click', () => {
@@ -110,7 +110,7 @@ function createYearOverviewDiv(year, managePeopleDiv){
     let removeYearButton = createRemoveYearButton(year);
   
     let modifyYearButton = document.createElement("img");
-    modifyYearButton.src = "/img/down.svg";
+    modifyYearButton.src = "/img/icons/down.svg";
     modifyYearButton.alt = "ModifyYearbutton";
     modifyYearButton.classList.add("modifyYearButton");
   
@@ -206,9 +206,9 @@ async function updateYearHeader(year, yearTitle, yearNickname, div){
 
 function changeExpandIcon(managePeopleDiv, modifyYearButton){
   if(managePeopleDiv.classList.contains('hidden')){
-    modifyYearButton.src = "/img/down.svg";
+    modifyYearButton.src = "/img/icons/down.svg";
   } else {
-    modifyYearButton.src = "/img/checkmark.svg";
+    modifyYearButton.src = "/img/icons/checkmark.svg";
   }
 }
 
@@ -216,7 +216,7 @@ function changeExpandIcon(managePeopleDiv, modifyYearButton){
 
 function createRemoveYearButton(year){
   let removeYearButton = document.createElement("img");
-  removeYearButton.src = "/img/remove.svg";
+  removeYearButton.src = "/img/icons/remove.svg";
   removeYearButton.alt = "Removebutton";
   removeYearButton.classList.add("removeYearButton");
   removeYearButton.addEventListener('click', () => {
@@ -268,29 +268,39 @@ function createManagePersonDiv(person, year, parentdiv) {
     div.classList.add("singleManagePersonDiv");
 
     let nameInput = document.createElement("input");
+    nameInput.placeholder = "Namn";
     nameInput.value = person.name;
     div.appendChild(nameInput);
 
     let nickInput = document.createElement("input");
+    nickInput.placeholder = "Nick";
     nickInput.value = person.nick;
     div.appendChild(nickInput);
 
     let postInput = document.createElement("input");
+    postInput.placeholder = "Post";
     postInput.value = person.post;
     div.appendChild(postInput);
 
     let descriptionTextArea = document.createElement("textarea");
+    descriptionTextArea.placeholder = "Beskrivning";
     descriptionTextArea.value = person.description;
     div.appendChild(descriptionTextArea);
 
-    [nameInput, nickInput, postInput, descriptionTextArea].forEach(element => {
+    let profileImageInput = createProfileImageInput(person, year);
+    profileImageUpload = profileImageInput[0];
+    div.appendChild(profileImageUpload);
+    profileImageUploadPreview = profileImageInput[1];
+    div.appendChild(profileImageUploadPreview);
+
+    [nameInput, nickInput, postInput, descriptionTextArea, profileImageUploadPreview].forEach(element => {
       element.addEventListener('change', () => {
         element.classList.add("changedField");
       });
     });
 
-    let doneButton = createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year);
-    let removeButton = CreateRemovePersonButton(person, year, parentdiv);
+    let doneButton = createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, profileImageUpload, person, year);
+    let removeButton = createRemovePersonButton(person, year, parentdiv);
     let controlButtons = document.createElement("div");
     controlButtons.classList.add("controlButtons");
     controlButtons.appendChild(doneButton);
@@ -300,45 +310,76 @@ function createManagePersonDiv(person, year, parentdiv) {
     return div;
 }
 
-function createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, person, year){
-  let doneButton = document.createElement("img");
-    doneButton.src = "/img/checkmark.svg";
+function createProfileImageInput(){
+  let profileImageInput = document.createElement("input");
+  profileImageInput.type = "file";
+  profileImageInput.accept = "image/*";
+  profileImageInput.classList.add("hidden");
+
+  let profileImageUploadPreview = document.createElement("img");
+  profileImageUploadPreview.src = "/img/placeholderPreview.svg";
+  profileImageUploadPreview.alt = "ProfileImagePreview";
+  profileImageUploadPreview.classList.add("profileImageUploadPreview");
+
+  profileImageUploadPreview.addEventListener('click', () => {
+    console.log("Changed profile image");
+    profileImageInput.click();
+  });
+
+  return [profileImageInput, profileImageUploadPreview];
+}
+
+function createChangePersonDoneButton(nameInput, nickInput, postInput, descriptionTextArea, profileImageUpload, person, year){
+    let doneButton = document.createElement("img");
+    doneButton.src = "/img/icons/checkmark.svg";
     doneButton.alt = "Donebutton";
     doneButton.classList.add("changePersonDoneButton");
 
     doneButton.addEventListener('click', () => {
         let newPerson = {
-            id: person.id,
-            name: nameInput.value,
-            nick: nickInput.value,
-            post: postInput.value,
-            description: descriptionTextArea.value
+          id: person.id,
+          name: nameInput.value,
+          nick: nickInput.value,
+          post: postInput.value,
+          description: descriptionTextArea.value
+        };
+
+        let formData = new FormData();
+        formData.append('adminKey', adminKey);
+        formData.append('yearId', year.id);
+        formData.append('newPerson', JSON.stringify(newPerson));
+
+        console.log(formData.get('yearId'));
+
+        if (profileImageUpload.files.length > 0) {
+          formData.append('profileImage', profileImageUpload.files[0]);
         }
+
         fetch('/api/updatePerson', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({adminKey : adminKey, newPerson: newPerson, year: year}),
+          method: 'POST',
+          body: formData
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            flashDiv(doneButton.parentElement.parentElement, 100);
-
-          })
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          flashDiv(doneButton.parentElement.parentElement, 100);
+        })
         .catch(error => {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
         });
     });
 
     return doneButton;
 }
 
-function CreateRemovePersonButton(person, year){
+
+
+
+
+function createRemovePersonButton(person, year){
   let removeButton = document.createElement("img");
-  removeButton.src = "/img/remove.svg";
+  removeButton.src = "/img/icons/remove.svg";
   removeButton.alt = "Removebutton";
 
   removeButton.classList.add("removePersonButton");
@@ -369,16 +410,16 @@ function createAddPersonDiv(year, managePeopleDiv){
   addPersonDiv.classList.add("addPersonDiv");
 
   let addPersonButton = document.createElement("img");
-  addPersonButton.src = "/img/add.svg";
+  addPersonButton.src = "/img/icons/add.svg";
   addPersonButton.alt = "Addbutton";
 
   addPersonButton.addEventListener('click', () => {
     let newPerson = {
       "id": createRandomSuffix(),
-      "name": "Name",
-      "nick": "Nick",
-      "post": "Post",
-      "description": "Description"
+      "name": "",
+      "nick": "",
+      "post": "",
+      "description": ""
     };
 
     fetch('/api/addPersonToPatetos', {

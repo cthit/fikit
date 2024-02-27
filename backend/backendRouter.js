@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
-import { upload} from './multer.js';
+import multer from 'multer';
+import { uploadPost, uploadProfileImage } from './multer.js';
 import { addImage } from './imgHandler.js';
 import fs from 'fs';
 import { isAdminKeyValid, getUsernameFromAdminKey } from '../server.js'
@@ -7,23 +8,24 @@ import * as path from 'path';
 import { validateJSONPost, validateJSONPatetYear, validateJSONPerson } from './jsonValidator.js';
 
 
+const pathToPostsFile = "public/posts.json";
+const pathToPatetosFile = "patetos.json";
 
 const backRouter = Router();
 
-backRouter.post('/uploadPost',upload.single('postImage'), (req, res) => {
+backRouter.post('/uploadPost', uploadPost.single('postImage'), (req, res) => {
 	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	let newPost = {
-		title : req.body.title,
-		description : req.body.description,
-		imageName : path.basename(req.file.filename),
-		id : Date.now() + '-' + Math.round(Math.random() * 1E9),
-		creationDate : Date.now(),
-		createdBy : getUsernameFromAdminKey(req.body.adminKey)
-	}
+	let newPost = req.body.newPost;	
+	newPost = JSON.parse(newPost);
+
+	newPost.imageName = path.basename(req.file.filename),
+	newPost.creationDate = Date.now();
+	newPost.createdBy = getUsernameFromAdminKey(req.body.adminKey);
+
 	if (!validateJSONPost(newPost)) return res.status(400).send("Invalid post data format");
 
-	addImage(newPost);
+	addImage(newPost, pathToPostsFile);
 
 	res.status(200).send("Post uploaded successfully!");
 });
@@ -31,13 +33,17 @@ backRouter.post('/uploadPost',upload.single('postImage'), (req, res) => {
 backRouter.post('/removePost', (req, res) => {
 	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	let id = req.body.post.id;
+	let postToRemove = req.body.post;
 
 	let allPosts = fs.readFileSync('public/posts.json');
 	allPosts = JSON.parse(allPosts);
-	allPosts = allPosts.filter(post => post.id !== id);
-	// console.log(allPosts[0].);	
+	allPosts = allPosts.filter(post => post.id !== postToRemove.id);
+
 	fs.writeFileSync('public/posts.json', JSON.stringify(allPosts, null, 2));
+
+	// Remove the corresponding image file
+	const imagePath = path.join('public', 'img', 'postImages', postToRemove.imageName);
+	fs.unlinkSync(imagePath); // This will delete the image file
 	
 	res.status(200).send("Post removed successfully!");
 });
@@ -106,25 +112,41 @@ backRouter.post('/removePersonFromPatetos', (req, res) => {
 	res.status(200).send("Person removed from patetos");
 });
 
-backRouter.post('/updatePerson', (req, res) => {
-	let newPerson = req.body.newPerson;
-	let year = req.body.year;
-	let adminKey = req.body.adminKey;
 
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid mew person data format");
+backRouter.post('/updatePerson', (req, res, next) => {
+    // Custom middleware to handle file upload
+    uploadProfileImage.single('profileImage')(req, res, err => {
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred (e.g., file too large)
+            console.error(err);
+            next(); // Proceed without the file
+        } else {
+            // No Multer error, continue with the request
+            next();
+        }
+    });
+}, (req, res) => {
+    let newPerson = JSON.parse(req.body.newPerson);
+    let yearId = req.body.yearId;
+    let adminKey = req.body.adminKey;
 
+    if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
+    if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid person data format");
 
-	let allPatetos = fs.readFileSync('patetos.json');
-	allPatetos = JSON.parse(allPatetos);
+    if (req.file) {
+        newPerson.profileImageName = path.basename(req.file.filename);
+    }
+    
+    let allPatetos = fs.readFileSync('patetos.json');
+    allPatetos = JSON.parse(allPatetos);
 
-	let yearEntry = allPatetos.find(entry => entry.id === year.id);
+    let yearEntry = allPatetos.find(entry => entry.id === yearId);
 
-	let personIndex = yearEntry.people.findIndex(person => person.id === newPerson.id);
-	yearEntry.people[personIndex] = newPerson;
+    let personIndex = yearEntry.people.findIndex(person => person.id === newPerson.id);
+    yearEntry.people[personIndex] = newPerson;
 
-	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Person updated in patetos");
+    fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
+    res.status(200).send("Person updated in patetos");
 });
 
 

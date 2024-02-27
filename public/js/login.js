@@ -31,7 +31,7 @@ function logout() {
         button.classList.add('hidden');
     }
     loginButton.textContent = 'Logga in';
-    toggleRemovePostButton();
+    // toggleRemovePostButton();
 }
 
 function login() {
@@ -104,7 +104,7 @@ function userIsLoggedIn(){
         button.classList.remove('hidden');
     }
 
-    toggleRemovePostButton();
+    // toggleRemovePostButton();
 };
 
 

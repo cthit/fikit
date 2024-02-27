@@ -1,15 +1,29 @@
 import multer from 'multer';
 
-const storage = multer.diskStorage({
+const postStorage = multer.diskStorage({
 	destination: function (req, file, cb) {
-	  cb(null, 'public/postImages/')
+	  cb(null, 'public/img/postImages/')
 	},
 	filename: function (req, file, cb) {
 		const ogFile = file.originalname.split(".");
 
-	  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9) + "." +ogFile[ogFile.length-1]
+	  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9) + "." + ogFile[ogFile.length-1]
 	  cb(null, file.fieldname + '-' + uniqueSuffix)
 	}
- })
+})
 
-export const upload = multer({ storage: storage })
+const profileImageStorage = multer.diskStorage({
+	
+	destination: function (req, file, cb) {
+	  	cb(null, 'public/img/profileImages/')
+	},
+	filename: function (req, file, cb) {
+		const ogFile = file.originalname.split(".");
+
+	  	const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9) + "." +ogFile[ogFile.length-1]
+		cb(null, file.fieldname + '-' + uniqueSuffix)
+	}
+})
+
+export const uploadPost = multer({ storage: postStorage })
+export const uploadProfileImage = multer({ storage: profileImageStorage })

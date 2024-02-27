@@ -1,18 +1,16 @@
-// import { createRandomSuffix } from './randomSuffix.js';
 
-let postImageDirPath = "postImages/";
+let postImageDirPath = "/img/postImages/";
 
 
 const createPostTitle = document.getElementById('createPostTitle');
 const createPostDescription = document.getElementById('createPostDescription');
 const createPostImage = document.getElementById('createPostImage');
-// const openCreatePostButton = document.getElementById('openCreatePostButton');
 const createPostDiv = document.getElementById('createPostDiv');
 const uploadImageToPost = document.getElementById('uploadImageToPost'); 
 const createPostImageInput = document.getElementById('createPostImageInput');
 const createPostPreviewImage = document.getElementById('createPostPreviewImage');
 const createPostSave = document.getElementById('createPostSave');
-let postParentDiv =document.getElementById("postsContainer");
+let postParentDiv = document.getElementById("postsContainer");
 
 
 openCreatePostButton.addEventListener('click', () => { 
@@ -42,13 +40,15 @@ function createNewPost(){
 }
 
 function uploadNewPost(post) {
+    let newPost = {
+        title : createPostTitle.value,
+        description : createPostDescription.value,
+        id: createRandomSuffix(),
+    }
     const formData = new FormData();
-    formData.append('postImage', createPostImageInput.files[0]);
-    formData.append('id', createRandomSuffix());
-    formData.append('title', createPostTitle.value);
-    formData.append('description', createPostDescription.value);
-    formData.append('user', username);
     formData.append('adminKey', adminKey)
+    formData.append('newPost', JSON.stringify(newPost));
+    formData.append('postImage', createPostImageInput.files[0]);
   
   
     fetch('/api/uploadPost', {
@@ -165,7 +165,7 @@ function createRemovePostButton(post){
     }
 
     let removeImg = document.createElement("img");
-    removeImg.src = "../img/remove.svg";
+    removeImg.src = "../img/icons/remove.svg";
     removePostButton.appendChild(removeImg);
 
 
@@ -208,6 +208,7 @@ function imageExists(url, callback) {'t'
     img.onerror = function() { callback(false); };
     img.src = url;
 }
+
 
 function toggleRemovePostButton(){
     let removePostButtons = document.getElementsByClassName("removePostButton");

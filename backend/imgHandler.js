@@ -1,8 +1,7 @@
-// const fs = require('fs');
 import fs from 'fs';
 
-export const addImage = (imgData) => {
-        let images = fs.readFileSync('public/posts.json', 'utf8');
+export const addImage = (imgData, pathToJsonFile) => {
+        let images = fs.readFileSync(pathToJsonFile, 'utf8');
         images = JSON.parse(images);
         images.push(imgData);
         
