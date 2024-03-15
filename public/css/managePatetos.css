@@ -12,34 +12,63 @@ footer {
 }
 
 .yearDiv {
-    background: grey;
+    background: #bdbdbd80;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
 
     width: 80%;
-    padding: 1rem;
 }
 
 .yearTitle {
+    background: #f0f0f0;
+        
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 3rem;
 
-    width: 100%;
+    width: calc(100% - 2rem);
+    height: 2rem;
     border-bottom: 2px solid #fff;
+    padding: 1rem;
 }
+
+.yearTitle>* {
+    font-size: 1.5rem;
+    white-space: nowrap;
+
+    border: none;
+}
+
+.yearTitle .yearTitleText {
+    width: 6rem;
+}
+
+.yearTitle .yearNickname {
+    width: 10rem;
+
+}
+
+.yearButtonGroup {
+    margin-left: auto;
+}
+
 .peopleDiv {
+    background: #bdbdbd;
+
+
     display: flex;
     flex-direction: column;
+
+    width: calc(100% - 2rem);
+    padding: 1rem;
 }
 
 .personDiv {
-    /* background: lightgrey; */
+    background: #bdbdbd;
 
     display: flex;
     flex-direction: row;
@@ -47,25 +76,75 @@ footer {
     justify-content: space-between;
     gap: .8rem;
 
-    min-height: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #fff;
+    margin-top: 1rem;
+}
+
+.personDiv:last-of-type{
+    border-bottom: none;
+}
+
+.personDiv .personImage {
+    background: rgb(233, 233, 233);
+    background: slategray;
+
+    object-fit: cover; /* Ensure the image covers the square */
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 5%;
+}
+
+.personDiv input, .personDiv textarea{
+    background: rgb(233, 233, 233);
+    border: none;
+
+    /* outline: 1px solid #fff; */
+
+    height: 2rem;
 }
 
 .personDiv input {
-    width: 7rem;
+    flex: 1;
+
+    text-align: center;
+
+    width: 3rem;
+}
+
+.personDiv textarea {
+    flex: 2.5;
+}
+
+.yearButtonGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem
+
 }
 
 .addPersonDiv {
-    /* background: lightgrey; */
+    /* background: #f0f0f0; */
+
     margin-top: 2rem;
 }
 
-.addYearDiv {
+.addYearDiv {    
     flex-direction: row;
     justify-content: space-evenly;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
-.personImage {
-    width: auto;
-    height: 2rem;
-    border-radius: 5%;
+
+.yearButtonGroup *{
+    font-size: 1.2rem;
+
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-between; */
 }

@@ -74,9 +74,9 @@ header h1 {
     display: none !important;
 }
 
-/* .invisible {
-    visibility: hidden;
-} */
+.invisible {
+    opacity: 0;
+}
 
 
 /*CASE SPECIFIC*/
@@ -130,12 +130,18 @@ section>h2 {
     margin: 0;
 }
 
-.optionsMenu>* {
+.button {
     background: darkslategray;
     color: #fff;
 
+    cursor: pointer;
+
     padding: .4rem;
     border-radius: .1rem;
+}
+
+.button:hover {
+    background: #192929;
 }
 
 .optionsMenu>*:hover {

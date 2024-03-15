@@ -146,20 +146,17 @@ backRouter.post('/updatePerson', (req, res) => {
 
             // Update the person's imageFile attribute with the new filename
             updatedPerson.imageFile = req.file.filename;
+		}
 
-			let allPatetos = fs.readFileSync(pathToPatetosFile);
-			allPatetos = JSON.parse(allPatetos);
-			
-			let year = allPatetos.find(year => year.id === req.body.yearId);
-			let person = year.people.find(person => person.id === updatedPerson.id);
-			Object.assign(person, updatedPerson);
+		let allPatetos = fs.readFileSync(pathToPatetosFile);
+		allPatetos = JSON.parse(allPatetos);
+		
+		let year = allPatetos.find(year => year.id === req.body.yearId);
+		let person = year.people.find(person => person.id === updatedPerson.id);
+		Object.assign(person, updatedPerson);
 
-			fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
-			
-			return res.status(200).json({ message: 'Person updated successfully.' });
-        }
+		fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
 
-        // Here, you can update the person data in your database, including the profile picture filename and imageFile attribute
 
         return res.status(200).json({ message: 'Person updated successfully.' });
     });

@@ -1,0 +1,75 @@
+
+public/img/postImages/*
+public/img/profileImages/*
+
+public/posts.json
+adminKeys.json
+patetos.json
+
+.env
+
+
+TODO.md
+
+
+
+
+# Dependency directories
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Ignore npm-debug.log files
+npm-debug.log*
+
+# Ignore yarn debug log files
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Compiled binary addons (https://github.com/nodejs/node-gyp)
+build/
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# VSCode settings
+.vscode/
+
+# IntelliJ
+.idea/
+
+# Cache of Yarn
+.yarn/cache/
+.yarn/unplugged/
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# npm package locks
+package-lock.json
+yarn.lock

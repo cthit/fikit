@@ -2,13 +2,6 @@ function createRandomSuffix() {
 	return Date.now() + '-' + Math.round(Math.random() * 1E9)
 }
 
-// new data = new FormData();
-// data.append('updatedPerson', "NEW GUY");
-// fetch("/api/updatePerson", {
-//     method: "POST",
-//     body: data,
-// });
-
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -46,7 +39,7 @@ function createAddYearDiv(){
     addYearDiv.appendChild(addYearNickname);
 
     const addYearButton = document.createElement("div");
-    addYearButton.classList.add("addYearButton");
+    addYearButton.classList.add("addYearButton", "button");
     addYearButton.innerText = "Lägg till år";
     addYearDiv.appendChild(addYearButton);
 
@@ -77,13 +70,10 @@ function createYearDiv(year){
     const yearTitle = createYearTitle(year);
     yearDiv.appendChild(yearTitle);
 
-
     const yearExpandButton = document.createElement("img");
     yearExpandButton.classList.add("yearExpandButton");
     yearExpandButton.src = "/img/icons/down.svg";
     yearDiv.appendChild(yearExpandButton);
-
-
 
 
     let open = false;
@@ -91,44 +81,82 @@ function createYearDiv(year){
         open = !open;
         if (open) {
             const PeopleDiv = createPeopleDiv(year);
-            yearExpandButton.src = "/img/icons/up.svg";
-
+            yearExpandButton.classList.add("hidden");
             yearDiv.appendChild(PeopleDiv);
+  
+            toggleInputField(yearTitle.getElementsByClassName("yearTitleText")[0]);
+            toggleInputField(yearTitle.getElementsByClassName("yearNickname")[0]);
         } else {
             yearDiv.removeChild(yearDiv.lastChild);
-            yearExpandButton.src = "/img/icons/down.svg";
+            yearExpandButton.classList.remove("hidden");
+
+            toggleInputField(yearTitle.getElementsByClassName("yearTitleText")[0]);
+            toggleInputField(yearTitle.getElementsByClassName("yearNickname")[0]);
         }
     });
 
     return yearDiv;
 }
 
+
+function toggleInputField(element){
+    console.log(element)
+    let newElement;
+    if (element.tagName.toLowerCase() === "input") {
+        newElement = document.createElement("h2");
+        newElement.innerText = element.value;
+    } else {
+        newElement = document.createElement("input");
+        newElement.value = element.innerText;
+
+        newElement.addEventListener("click", (event) => {
+            event.stopPropagation();
+        });
+
+    }
+    newElement.classList = element.classList;
+
+    element.replaceWith(newElement);
+}
+
+
 function createYearTitle(year){
     const yearTitle = document.createElement("div");
     yearTitle.classList.add("yearTitle");
 
     const yearTitleText = document.createElement("h2");
+    yearTitleText.classList.add("yearTitleText");
     yearTitleText.innerText = year.year;
     yearTitle.appendChild(yearTitleText);
 
     const yearNickname = document.createElement("h2");
+    yearNickname.classList.add("yearNickname");
     yearNickname.innerText = year.nickname;
     yearTitle.appendChild(yearNickname);
+    
 
-    const yearRemoveButton = document.createElement("img");
-    yearRemoveButton.classList.add("yearRemoveButton");
-    yearRemoveButton.src = "/img/icons/delete.svg";
-    yearTitle.appendChild(yearRemoveButton);
+    const yearButtonGroup = document.createElement("div");
+    yearButtonGroup.classList.add("yearButtonGroup");
+    yearTitle.appendChild(yearButtonGroup);
+
+    const yearUpdateButton = document.createElement("div");
+    yearUpdateButton.classList.add("yearUpdateButton", "button");
+    yearUpdateButton.innerText = "Uppdatera";
+    yearButtonGroup.appendChild(yearUpdateButton);
+
+    const yearRemoveButton = document.createElement("div");
+    yearRemoveButton.classList.add("yearRemoveButton", "button");
+    yearRemoveButton.innerText = "Ta bort";
+    yearButtonGroup.appendChild(yearRemoveButton);
 
     yearRemoveButton.addEventListener("click", async (event) => {
         event.stopPropagation();
 
         const successfullDelete = await deleteYear(year.id);
         if (successfullDelete) {
-            yearTitle.parentElement.remove();
+            yearButtonGroup.parentElement.remove();
         }
     });
-    
 
     return yearTitle;
 }
@@ -168,37 +196,44 @@ function createPersonDiv(person, year){
     personImage.classList.add("personImage");
 
     if (person.imageFile) personImage.src = "/img/profileImages/" + person.imageFile;
-    else personImage.src =  "/img/icons/profilePicture.svg";
+    else personImage.src =  "/img/icons/upload.svg";
 
     personDiv.appendChild(personImage);
 
     const personName = document.createElement("input");
+    personName.placeholder = "Namn";
     personName.value = person.name;
     personDiv.appendChild(personName);
 
     const personNickname = document.createElement("input");
+    personNickname.placeholder = "Nick";
     personNickname.value = person.nick;
     personDiv.appendChild(personNickname);
 
     const personPost = document.createElement("input");
+    personPost.placeholder = "Post";
     personPost.value = person.post;
     personDiv.appendChild(personPost);
 
     const personDescription = document.createElement("textarea");
+    personDescription.placeholder = "Beskrivning";
     personDescription.value = person.description;
     personDiv.appendChild(personDescription);
 
+    const yearButtonGroup = document.createElement("div");
+    yearButtonGroup.classList.add("yearButtonGroup");
+    personDiv.appendChild(yearButtonGroup);
 
     const personUpdateButton = document.createElement("div");
-    personUpdateButton.classList.add("personUpdateButton");
-    personUpdateButton.innerText = "Update";
-    personDiv.appendChild(personUpdateButton);
+    personUpdateButton.classList.add("personUpdateButton", "button");
+    personUpdateButton.innerText = "Uppdatera";
+    yearButtonGroup.appendChild(personUpdateButton);
 
 
     const personDeleteButton = document.createElement("div");
-    personDeleteButton.classList.add("personDeleteButton");
-    personDeleteButton.innerText = "Delete";
-    personDiv.appendChild(personDeleteButton);
+    personDeleteButton.classList.add("personDeleteButton", "button");
+    personDeleteButton.innerText = "Ta bort";
+    yearButtonGroup.appendChild(personDeleteButton);
 
     personImage.addEventListener("click", async () => {
         personImageInput.click();
@@ -252,6 +287,10 @@ function createAddpersonDiv(year){
     const addPersonDiv = document.createElement("div");
     addPersonDiv.classList.add("addPersonDiv", "personDiv");
 
+    const div = document.createElement("div");
+    div.classList.add("invisible");
+    addPersonDiv.appendChild(div);
+
     const addPersonName = document.createElement("input");
     addPersonName.placeholder = "Name";
     addPersonDiv.appendChild(addPersonName);
@@ -269,8 +308,8 @@ function createAddpersonDiv(year){
     addPersonDiv.appendChild(addPersonDescription);
 
     const addPersonButton = document.createElement("div");
-    addPersonButton.classList.add("addPersonButton");
-    addPersonButton.innerText = "Add";
+    addPersonButton.classList.add("addPersonButton", "button");
+    addPersonButton.innerText = "Lägg till person";
     addPersonDiv.appendChild(addPersonButton);
 
     addPersonButton.addEventListener("click", async () => {
@@ -373,8 +412,8 @@ async function updatePerson(data){
         console.log('Person updated:');
         return true;
     } else {
-        return false;
         console.error('Error updating person:', response);
+        return false;
     }
 }
 
