@@ -107,6 +107,12 @@ nav a {
 }
 
 
+section>h2 {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-family: "Protest Revolution", sans-serif;
+}
+
 
 /* ------ OPTIONS MENU ------ */
 .optionsMenu {

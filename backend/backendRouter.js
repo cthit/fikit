@@ -8,8 +8,14 @@ import * as path from 'path';
 import { validateJSONPost, validateJSONPatetYear, validateJSONPerson } from './jsonValidator.js';
 
 
+const pathToPatetosImages = "public/img/profileImages";
 const pathToPostsFile = "public/posts.json";
 const pathToPatetosFile = "patetos.json";
+
+function createRandomSuffix() {
+	return Date.now() + '-' + Math.round(Math.random() * 1E9)
+}
+
 
 const backRouter = Router();
 
@@ -54,158 +60,139 @@ backRouter.get('/getPosts', (req, res) => {
 	res.status(200).send(activePosts);
 });
 
+
 backRouter.get('/getAllPeople', (req, res) => {
-	let allPatetos = fs.readFileSync('patetos.json');
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	res.status(200).send(allPatetos);
 });
 
 backRouter.get('/getAllPatetos', (req, res) => {
-	let allPatetos = fs.readFileSync('patetos.json');
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	allPatetos = allPatetos.slice(1);
 	res.status(200).send(allPatetos);
 });
 
 backRouter.get('/getSittande', (req, res) => {
-	let allPatetos = fs.readFileSync('patetos.json');
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	if (allPatetos.length === 0) return res.status(404).send("No sittande found");
 	let sittande = allPatetos[0];
 	res.status(200).send(sittande);
 });	
 
-backRouter.post('/addPersonToPatetos', (req, res) => {
-	let adminKey = req.body.adminKey;
-	let newPerson = req.body.newPerson;
-	let year = req.body.year;
 
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid person data format");
 
-	let allPatetos = fs.readFileSync('patetos.json');
-	allPatetos = JSON.parse(allPatetos);
+backRouter.post('/addPerson', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	let yearEntry = allPatetos.find(entry => entry.id === year.id);
-	yearEntry.people.push(newPerson);
+	const newPerson = req.body.newPerson;
+	const yearId = req.body.yearId;
 
-    fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Person added to patetos");
-});
-
-backRouter.post('/removePersonFromPatetos', (req, res) => {
-	let adminKey = req.body.adminKey;
-	let person = req.body.person;
-	let year = req.body.year;
-
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPerson(person)) return res.status(400).send("Invalid person data format");
-	if (!validateJSONPatetYear(year)) return res.status(400).send("Invalid year data format");
-	
-	let allPatetos = fs.readFileSync('patetos.json');
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	
-	let yearEntry = allPatetos.find(entry => entry.id === year.id); // Corrected typo here
-	yearEntry.people = yearEntry.people.filter(Nperson => (Nperson.id !== person.id));
-	
-	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Person removed from patetos");
+	let year = allPatetos.find(year => year.id === yearId);
+	year.people.push(newPerson);
+
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+
+	res.status(200).send("Person added successfully!");
 });
 
+backRouter.post('/deletePerson', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-backRouter.post('/updatePerson', (req, res, next) => {
-    // Custom middleware to handle file upload
-    uploadProfileImage.single('profileImage')(req, res, err => {
-        if (err instanceof multer.MulterError) {
-            // A Multer error occurred (e.g., file too large)
-            console.error(err);
-            next(); // Proceed without the file
-        } else {
-            // No Multer error, continue with the request
-            next();
-        }
-    });
-}, (req, res) => {
-    let newPerson = JSON.parse(req.body.newPerson);
-    let yearId = req.body.yearId;
-    let adminKey = req.body.adminKey;
+	const personId = req.body.personId;
+	const yearId = req.body.yearId;
 
-    if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-    if (!validateJSONPerson(newPerson)) return res.status(400).send("Invalid person data format");
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
+	allPatetos = JSON.parse(allPatetos);
+	
+	let year = allPatetos.find(year => year.id === yearId);
+	year.people = year.people.filter(person => person.id !== personId);
 
-    if (req.file) {
-        newPerson.profileImageName = path.basename(req.file.filename);
-    }
-    
-    let allPatetos = fs.readFileSync('patetos.json');
-    allPatetos = JSON.parse(allPatetos);
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
 
-    let yearEntry = allPatetos.find(entry => entry.id === yearId);
+	res.status(200).send("Person deleted successfully!");
+});
 
-    let personIndex = yearEntry.people.findIndex(person => person.id === newPerson.id);
-    yearEntry.people[personIndex] = newPerson;
+backRouter.post('/updatePerson', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-    fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-    res.status(200).send("Person updated in patetos");
+	const updatedPerson = req.body.updatedPerson;
+	const yearId = req.body.yearId;
+	console.log(yearId);
+
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
+	allPatetos = JSON.parse(allPatetos);
+	
+	let year = allPatetos.find(year => year.id === yearId);
+	if (!year) return res.status(404).send("Year not found");
+
+	let person = year.people.find(person => person.id === updatedPerson.id);
+	if (!person) return res.status(404).send("Person not found");
+
+	Object.assign(person, updatedPerson);
+
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+
+	res.status(200).send("Person updated successfully!");
 });
 
 
+// Manage Years
 
-backRouter.post('/addNewYearOfPatetos', (req, res) => {
-	let adminKey = req.body.adminKey;
-	let newYear = req.body.newYear;
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPatetYear(newYear)) return res.status(400).send("Invalid year data format");
+backRouter.post('/addYear', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	let allPatetos = fs.readFileSync('patetos.json');
+	const newYear = req.body.newYear;
+
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
-
-	if (allPatetos.find(entry => entry.id === newYear.id)) return res.status(409).send("Year already exists");
-
+	
 	allPatetos.push(newYear);
-	allPatetos = sortYears(allPatetos);
 
-	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Year added to patetos");
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+
+	res.status(200).send("Year added successfully!");
 });
 
-backRouter.post('/removeYearOfPatetos', (req, res) => {
-	let adminKey = req.body.adminKey;
-	let year = req.body.year;
+backRouter.post('/deleteYear', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPatetYear(year)) return res.status(400).send("Invalid year data format");
+	const yearId = req.body.yearId;
 
-	let allPatetos = fs.readFileSync('patetos.json');
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	
-	allPatetos = allPatetos.filter(entry => entry.id !== year.id);
-	allPatetos = sortYears(allPatetos);
+	allPatetos = allPatetos.filter(year => year.id !== yearId);
 
-	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Year removed from patetos");
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+
+	res.status(200).send("Year deleted successfully!");
 });
 
-backRouter.post('/updateYearOfPatetos', (req, res) => {
-	let newYear = req.body.newYear;
-	let adminKey = req.body.adminKey;
+backRouter.post('/updateYear', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	if (!isAdminKeyValid(adminKey)) return res.status(403).send("Adminkey not valid");
-	if (!validateJSONPatetYear(newYear)) return res.status(400).send("Invalid year data format");
-	if (newYear.year === undefined || newYear.nickname === undefined) return res.status(400).send("Data cannot be null");
-	
-	let allPatetos = fs.readFileSync('patetos.json');
+	const updatedYear = req.body.updatedYear;
+
+	let allPatetos = fs.readFileSync(pathToPatetosFile);
 	allPatetos = JSON.parse(allPatetos);
 	
-	let yearIndex = allPatetos.findIndex(entry => entry.id === newYear.id);
-	allPatetos[yearIndex].year = newYear.year;
-	allPatetos[yearIndex].nickname = newYear.nickname;
+	let year = allPatetos.find(year => year.id === updatedYear.id);
+	if (!year) return res.status(404).send("Year not found");
 
-	allPatetos = sortYears(allPatetos);
+	Object.assign(year, updatedYear);
 
-	fs.writeFileSync('patetos.json', JSON.stringify(allPatetos, null, 2));
-	res.status(200).send("Year updated in patetos");
+	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+
+	res.status(200).send("Year updated successfully!");
 });
+
+
 
 
 function sortYears(patetos) {

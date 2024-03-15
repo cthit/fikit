@@ -73,7 +73,7 @@ function postCreated() {
     createPostDiv.classList.add('hidden');
     createPostTitle.value = '';
     createPostDescription.value = '';
-    createPostImageInput.value = '';
+    createPostImageInput.value = '';     
     createPostPreviewImage.src = '../img/placeholderPreview.svg';
 }
 
