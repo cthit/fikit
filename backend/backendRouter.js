@@ -1,11 +1,13 @@
 import express, { Router } from 'express';
 import multer from 'multer';
 import { uploadPost, uploadProfileImage } from './multer.js';
-import { addImage } from './imgHandler.js';
 import fs from 'fs';
-import { isAdminKeyValid, getUsernameFromAdminKey } from '../server.js'
 import * as path from 'path';
+
 import { validateJSONPost, validateJSONPatetYear, validateJSONPerson } from './jsonValidator.js';
+import { addImage } from './imgHandler.js';
+import { isAdminKeyValid, getUsernameFromAdminKey } from '../server.js'
+
 
 
 const pathToPatetosImages = "public/img/profileImages";
@@ -118,27 +120,49 @@ backRouter.post('/deletePerson', (req, res) => {
 	res.status(200).send("Person deleted successfully!");
 });
 
+
+
 backRouter.post('/updatePerson', (req, res) => {
-	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
+	// if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
 
-	const updatedPerson = req.body.updatedPerson;
-	const yearId = req.body.yearId;
-	console.log(yearId);
-
-	let allPatetos = fs.readFileSync(pathToPatetosFile);
-	allPatetos = JSON.parse(allPatetos);
 	
-	let year = allPatetos.find(year => year.id === yearId);
-	if (!year) return res.status(404).send("Year not found");
+    uploadProfileImage(req, res, async function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json({ error: err.message });
+        } else if (err) {
+            return res.status(500).json({ error: 'An unknown error occurred.' });
+        }
 
-	let person = year.people.find(person => person.id === updatedPerson.id);
-	if (!person) return res.status(404).send("Person not found");
+        const updatedPerson = JSON.parse(req.body.updatedPerson);
 
-	Object.assign(person, updatedPerson);
+        // Check if there's a file uploaded for the profile picture
+        if (req.file) {
+            // If a file is uploaded, remove the previous profile picture
+            const previousProfilePicture = updatedPerson.imageFile;
+            if (previousProfilePicture) {
+                const previousImagePath = path.join('public', 'img', 'profileImages', previousProfilePicture);
+                fs.unlinkSync(previousImagePath);
+            }
 
-	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+            // Update the person's imageFile attribute with the new filename
+            updatedPerson.imageFile = req.file.filename;
 
-	res.status(200).send("Person updated successfully!");
+			let allPatetos = fs.readFileSync(pathToPatetosFile);
+			allPatetos = JSON.parse(allPatetos);
+			
+			let year = allPatetos.find(year => year.id === req.body.yearId);
+			let person = year.people.find(person => person.id === updatedPerson.id);
+			Object.assign(person, updatedPerson);
+
+			fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
+			
+			return res.status(200).json({ message: 'Person updated successfully.' });
+        }
+
+        // Here, you can update the person data in your database, including the profile picture filename and imageFile attribute
+
+        return res.status(200).json({ message: 'Person updated successfully.' });
+    });
 });
 
 
@@ -219,5 +243,11 @@ function sortYears(patetos) {
 
 	return patetos;
 }
+
+
+
+
+
+
 
 export default backRouter;

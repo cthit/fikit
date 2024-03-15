@@ -165,7 +165,7 @@ function createRemovePostButton(post){
     }
 
     let removeImg = document.createElement("img");
-    removeImg.src = "../img/icons/remove.svg";
+    removeImg.src = "../img/icons/delete.svg";
     removePostButton.appendChild(removeImg);
 
 

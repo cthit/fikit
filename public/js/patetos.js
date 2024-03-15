@@ -71,8 +71,8 @@ function createInfoImgDiv(person){
   let infoImgDiv = document.createElement("div");
 
   let img = document.createElement("img");
-  if (person.profileImageName && person.profileImageName !== undefined) {
-    img.src = 'img/profileImages/' + person.profileImageName;
+  if (person.imageFile && person.imageFile !== undefined) {
+    img.src = 'img/profileImages/' + person.imageFile;
   } else {
     img.src = 'img/logos/FikIT.png';
     img.style.border = "3px solid black";

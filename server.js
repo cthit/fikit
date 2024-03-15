@@ -1,15 +1,10 @@
 import express from 'express';
-import path from 'path';
 import fs from 'fs';
-import multer from 'multer';
 
 import backRouter from './backend/backendRouter.js';
 
 
-
 const app = express();
-const upload = multer({ dest: 'uploads/' }); // Temporary folder to store uploaded files
-
 const port = 3000;
 
 // Serve static files from the 'public' folder

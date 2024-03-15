@@ -2,9 +2,19 @@ function createRandomSuffix() {
 	return Date.now() + '-' + Math.round(Math.random() * 1E9)
 }
 
+// new data = new FormData();
+// data.append('updatedPerson', "NEW GUY");
+// fetch("/api/updatePerson", {
+//     method: "POST",
+//     body: data,
+// });
+
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     populatePatetosDiv();
 });
+
 
 
 
@@ -149,6 +159,19 @@ function createPersonDiv(person, year){
     const personDiv = document.createElement("div");
     personDiv.classList.add("personDiv");
 
+    const personImageInput = document.createElement("input");
+    personImageInput.classList.add("hidden");
+    personImageInput.type = "file";
+    personDiv.appendChild(personImageInput);
+
+    const personImage = document.createElement("img");
+    personImage.classList.add("personImage");
+
+    if (person.imageFile) personImage.src = "/img/profileImages/" + person.imageFile;
+    else personImage.src =  "/img/icons/profilePicture.svg";
+
+    personDiv.appendChild(personImage);
+
     const personName = document.createElement("input");
     personName.value = person.name;
     personDiv.appendChild(personName);
@@ -177,6 +200,16 @@ function createPersonDiv(person, year){
     personDeleteButton.innerText = "Delete";
     personDiv.appendChild(personDeleteButton);
 
+    personImage.addEventListener("click", async () => {
+        personImageInput.click();
+    });
+
+    personImageInput.addEventListener("change", async () => {
+        personImage.src = URL.createObjectURL(personImageInput.files[0]);
+    });
+
+
+
 
     personUpdateButton.addEventListener("click", async () => {
         const updatedPerson = {
@@ -187,7 +220,13 @@ function createPersonDiv(person, year){
             description: personDescription.value,
         };
 
-        const successfullUpdate = await updatePerson(updatedPerson, year.id);
+        const data = new FormData();
+        data.append('updatedPerson', JSON.stringify(updatedPerson));
+        data.append('personImage', personImageInput.files[0]);
+        data.append('yearId', year.id);
+        data.append('adminKey', adminKey);
+
+        const successfullUpdate = await updatePerson(data);
         if (successfullUpdate) {
             flashDiv(personDiv);
         } else {
@@ -323,17 +362,15 @@ async function deletePerson(personId, yearId){
     );
 }
 
-async function updatePerson(updatedPerson, yearId){
+async function updatePerson(data){
+    console.log(data)
     const response = await fetch('/api/updatePerson', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ updatedPerson, yearId, adminKey}),
+        body: data,
     });
 
     if (response.ok) {
-        console.log('Person updated:', updatedPerson);
+        console.log('Person updated:');
         return true;
     } else {
         return false;

@@ -25,5 +25,15 @@ const profileImageStorage = multer.diskStorage({
 	}
 })
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/img/profileImages');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+
 export const uploadPost = multer({ storage: postStorage })
-export const uploadProfileImage = multer({ storage: profileImageStorage })
+export const uploadProfileImage = multer({ storage: profileImageStorage }).single('personImage');
