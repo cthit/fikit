@@ -1,11 +1,15 @@
 import express from 'express';
 import fs from 'fs';
+import dotenv from 'dotenv';
 
 import backRouter from './backend/backendRouter.js';
 
+dotenv.config();
+
+
+const port = process.env.PORT || 3000;
 
 const app = express();
-const port = 3000;
 
 // Serve static files from the 'public' folder
 app.use(express.static('public'));
