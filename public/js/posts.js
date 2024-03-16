@@ -1,6 +1,5 @@
 
-let postImageDirPath = "/img/postImages/";
-
+const postsDiv = document.getElementById('posts');
 
 const createPostTitle = document.getElementById('createPostTitle');
 const createPostDescription = document.getElementById('createPostDescription');
@@ -11,6 +10,9 @@ const createPostImageInput = document.getElementById('createPostImageInput');
 const createPostPreviewImage = document.getElementById('createPostPreviewImage');
 const createPostSave = document.getElementById('createPostSave');
 let postParentDiv = document.getElementById("postsContainer");
+
+
+let postImageDirPath = "/img/postImages/";
 
 
 openCreatePostButton.addEventListener('click', () => { 
@@ -95,9 +97,15 @@ function updateNewsPost() {
     })
     .then(posts => {
         postParentDiv.innerHTML = "";
-        posts.forEach(post => {
-            createPost(post, postParentDiv);
-        });
+            if (posts.length === 0) {
+            postsDiv.classList.add("hidden");
+        } else {
+            postsDiv.classList.remove("hidden");
+
+            posts.forEach(post => {
+                createPost(post, postParentDiv);
+            });
+        }
         postCreated();
     })
     .catch(error => {
@@ -111,7 +119,7 @@ updateNewsPost()
 
 
 
-// METHODS FOR CREATAING POSTS ON THE PAGE 
+// METHODS FOR LOADING POSTS ON THE PAGE 
 
 
 function createPost(post, parentDiv){

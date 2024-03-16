@@ -74,7 +74,7 @@ function createInfoImgDiv(person){
   if (person.imageFile && person.imageFile !== undefined) {
     img.src = 'img/profileImages/' + person.imageFile;
   } else {
-    img.src = 'img/logos/FikIT.png';
+    img.src = 'img/logos/fikit.png';
     img.style.border = "3px solid black";
 
   }
