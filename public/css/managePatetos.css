@@ -2,6 +2,11 @@ footer {
     display: none;
 }
 
+.changedField {
+    outline: .15rem solid orange;
+}
+
+
 .managePatetosDiv {
     display: flex;
     flex-direction: column;
@@ -38,7 +43,6 @@ footer {
 
 .yearTitle>* {
     font-size: 1.5rem;
-    white-space: nowrap;
 
     border: none;
 }
@@ -47,10 +51,6 @@ footer {
     width: 6rem;
 }
 
-.yearTitle .yearNickname {
-    width: 10rem;
-
-}
 
 .yearButtonGroup {
     margin-left: auto;
@@ -94,6 +94,15 @@ footer {
     width: 2rem;
     height: 2rem;
     border-radius: 5%;
+
+    transition: all .3s ease;
+}
+
+.personDiv .personImage:hover {
+    background: rgb(140, 158, 175);
+
+    transform: scale(1.1);
+    transition: all .3s ease;
 }
 
 .personDiv input, .personDiv textarea{

@@ -6,7 +6,6 @@
 @import url(patetos.css);
 @import url(posts.css);
 @import url(footer.css);
-@import url(managePatetos.css);
 @import url(mobile.css);
 
 
@@ -72,6 +71,8 @@ header h1 {
 
 .hidden {
     display: none !important;
+
+    transition: all 11s ease;
 }
 
 .invisible {

@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function populatePatetosDiv(){
     const patetos = await getAllPatetos();
-    console.log(patetos);
 
     const managePatetosDiv = document.getElementById('managePatetosDiv');
     
@@ -68,70 +67,51 @@ function createYearDiv(year){
     yearDiv.classList.add("yearDiv");
 
     const yearTitle = createYearTitle(year);
-    yearDiv.appendChild(yearTitle);
 
     const yearExpandButton = document.createElement("img");
     yearExpandButton.classList.add("yearExpandButton");
     yearExpandButton.src = "/img/icons/down.svg";
-    yearDiv.appendChild(yearExpandButton);
+
+    const PeopleDiv = createPeopleDiv(year);
 
 
     let open = false;
     yearDiv.addEventListener("click", () => {
         open = !open;
         if (open) {
-            const PeopleDiv = createPeopleDiv(year);
+            PeopleDiv.classList.remove("hidden");
+            // const PeopleDiv = createPeopleDiv(year);
             yearExpandButton.classList.add("hidden");
             yearDiv.appendChild(PeopleDiv);
-  
-            toggleInputField(yearTitle.getElementsByClassName("yearTitleText")[0]);
-            toggleInputField(yearTitle.getElementsByClassName("yearNickname")[0]);
         } else {
-            yearDiv.removeChild(yearDiv.lastChild);
+            PeopleDiv.classList.add("hidden");
+            // yearDiv.removeChild(yearDiv.lastChild);
             yearExpandButton.classList.remove("hidden");
-
-            toggleInputField(yearTitle.getElementsByClassName("yearTitleText")[0]);
-            toggleInputField(yearTitle.getElementsByClassName("yearNickname")[0]);
         }
     });
+
+    yearDiv.appendChild(yearTitle);
+    yearDiv.appendChild(yearExpandButton);
+
 
     return yearDiv;
 }
 
 
-function toggleInputField(element){
-    console.log(element)
-    let newElement;
-    if (element.tagName.toLowerCase() === "input") {
-        newElement = document.createElement("h2");
-        newElement.innerText = element.value;
-    } else {
-        newElement = document.createElement("input");
-        newElement.value = element.innerText;
-
-        newElement.addEventListener("click", (event) => {
-            event.stopPropagation();
-        });
-
-    }
-    newElement.classList = element.classList;
-
-    element.replaceWith(newElement);
-}
 
 
 function createYearTitle(year){
     const yearTitle = document.createElement("div");
     yearTitle.classList.add("yearTitle");
 
-    const yearTitleText = document.createElement("h2");
+    const yearTitleText = document.createElement("input");
     yearTitleText.classList.add("yearTitleText");
-    yearTitleText.innerText = year.year;
+    yearTitleText.value = year.year;
     yearTitle.appendChild(yearTitleText);
 
-    const yearNickname = document.createElement("h2");
+    const yearNickname = document.createElement("input");
     yearNickname.classList.add("yearNickname");
-    yearNickname.innerText = year.nickname;
+    yearNickname.value = year.nickname;
     yearTitle.appendChild(yearNickname);
     
 
@@ -140,7 +120,7 @@ function createYearTitle(year){
     yearTitle.appendChild(yearButtonGroup);
 
     const yearUpdateButton = document.createElement("div");
-    yearUpdateButton.classList.add("yearUpdateButton", "button");
+    yearUpdateButton.classList.add("yearUpdateButton", "button", "hidden");
     yearUpdateButton.innerText = "Uppdatera";
     yearButtonGroup.appendChild(yearUpdateButton);
 
@@ -148,6 +128,50 @@ function createYearTitle(year){
     yearRemoveButton.classList.add("yearRemoveButton", "button");
     yearRemoveButton.innerText = "Ta bort";
     yearButtonGroup.appendChild(yearRemoveButton);
+
+    yearTitleText.addEventListener("input", () => {
+        if (yearTitleText.value !== year.year) {
+            yearTitleText.classList.add("changedField");
+            yearUpdateButton.classList.remove("hidden");
+        } else {
+            yearTitleText.classList.remove("changedField");
+            if (yearNickname.value === year.nickname) yearUpdateButton.classList.add("hidden");
+        }
+    });
+
+    yearNickname.addEventListener("input", () => {
+        if (yearNickname.value !== year.nickname) {
+            yearNickname.classList.add("changedField");
+            yearUpdateButton.classList.remove("hidden");
+        } else {
+            yearNickname.classList.remove("changedField");
+            if (yearTitleText.value === year.year) yearUpdateButton.classList.add("hidden");
+        }
+    });
+
+
+
+    yearUpdateButton.addEventListener("click", async (event) => {
+        const updatedYear = {
+            year: yearTitleText.value,
+            nickname: yearNickname.value,
+            id: year.id,
+        };
+
+        const successfullUpdate = await updateYear(updatedYear);
+        if (successfullUpdate) {
+            flashDiv(yearTitle, "green");
+
+            yearUpdateButton.classList.add("hidden");
+        } else {
+            flashDiv(yearTitle, "red");
+
+            yearTitleText.value = year.year;
+            yearNickname.value = year.nickname;
+        }
+        yearTitleText.classList.remove("changedField");
+        yearNickname.classList.remove("changedField");
+    });
 
     yearRemoveButton.addEventListener("click", async (event) => {
         event.stopPropagation();
@@ -157,6 +181,11 @@ function createYearTitle(year){
             yearButtonGroup.parentElement.remove();
         }
     });
+
+    [yearTitleText, yearNickname, yearUpdateButton].forEach(input => {
+        input.addEventListener("click", (event) => { event.stopPropagation(); });
+    });
+
 
     return yearTitle;
 }
@@ -225,7 +254,7 @@ function createPersonDiv(person, year){
     personDiv.appendChild(yearButtonGroup);
 
     const personUpdateButton = document.createElement("div");
-    personUpdateButton.classList.add("personUpdateButton", "button");
+    personUpdateButton.classList.add("personUpdateButton", "button", "invisible");
     personUpdateButton.innerText = "Uppdatera";
     yearButtonGroup.appendChild(personUpdateButton);
 
@@ -241,6 +270,7 @@ function createPersonDiv(person, year){
 
     personImageInput.addEventListener("change", async () => {
         personImage.src = URL.createObjectURL(personImageInput.files[0]);
+        personUpdateButton.classList.remove("invisible");
     });
 
 
@@ -263,8 +293,15 @@ function createPersonDiv(person, year){
 
         const successfullUpdate = await updatePerson(data);
         if (successfullUpdate) {
-            flashDiv(personDiv);
+            flashDiv(personDiv, "green");
+            personUpdateButton.classList.add("invisible");
+            [personName, personNickname, personPost, personDescription].forEach(input => {
+                input.classList.remove("changedField");
+            });
+
         } else {
+            flashDiv(personDiv, "red");
+
             personName.value = person.name;
             personNickname.value = person.nick;
             personPost.value = person.post;
@@ -276,6 +313,50 @@ function createPersonDiv(person, year){
         const successfullDelete = await deletePerson(person.id, year.id);
         if (successfullDelete) {
             personDiv.remove();
+        }
+    });
+
+    [personName, personNickname, personPost, personDescription].forEach(input => {
+        input.addEventListener("input", (event) => { 
+        if (personName.value === person.name && personNickname.value === person.nick && personPost.value === person.post && personDescription.value === person.description && personImageInput.files.length === 0) {
+                personUpdateButton.classList.add("invisible");
+            }
+        });
+    });
+
+    personName.addEventListener("input", () => {
+        if (personName.value !== person.name) {
+            personUpdateButton.classList.remove("invisible");
+            personName.classList.add("changedField");
+        } else {
+            personName.classList.remove("changedField");
+        }
+    });
+
+    personNickname.addEventListener("input", () => {
+        if (personNickname.value !== person.nick) {
+            personUpdateButton.classList.remove("invisible");
+            personNickname.classList.add("changedField");
+        } else {
+            personNickname.classList.remove("changedField");
+        }
+    });
+
+    personPost.addEventListener("input", () => {
+        if (personPost.value !== person.post) {
+            personUpdateButton.classList.remove("invisible");
+            personPost.classList.add("changedField");
+        } else {
+            personPost.classList.remove("changedField");
+        }
+    });
+
+    personDescription.addEventListener("input", () => {
+        if (personDescription.value !== person.description) {
+            personUpdateButton.classList.remove("invisible");
+            personDescription.classList.add("changedField");
+        } else {
+            personDescription.classList.remove("changedField");
         }
     });
 
@@ -346,7 +427,6 @@ async function getAllPatetos(){
         return response.json();
     }
     ).then(patetos => {
-        console.log('Data fetched:', patetos);
         return patetos;
     }
     ).catch(error => {
@@ -402,7 +482,6 @@ async function deletePerson(personId, yearId){
 }
 
 async function updatePerson(data){
-    console.log(data)
     const response = await fetch('/api/updatePerson', {
         method: 'POST',
         body: data,
@@ -463,7 +542,6 @@ async function updateYear(updatedYear){
         },
         body: JSON.stringify({ updatedYear, adminKey }),
     });
-
     if (response.ok) {
         console.log('Year updated:', updatedYear);
         return true;
@@ -475,9 +553,10 @@ async function updateYear(updatedYear){
 
 
 
-function flashDiv(div){
-    div.classList.add("flashingDiv");
+function flashDiv(div, color, time = 70){
+    const originalColor = div.style.backgroundColor;
+    div.style.backgroundColor = color;
     setTimeout(() => {
-        div.classList.remove("flashingDiv");
-    }, 500);
+        div.style.backgroundColor = originalColor;
+    }, time);
 }
