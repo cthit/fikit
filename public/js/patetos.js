@@ -83,15 +83,19 @@ function createPersonImage(person){
     const personImage = document.createElement("img");
     personImage.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
 
-
+    
     if (person.imageFile && person.imageFile !== undefined) {
         personImage.src = 'img/profileImages/' + person.imageFile;
+    } else if (committeeInfo.fallbackProfileImage){
+        personImage.src = committeeInfo.fallbackProfileImage;
     } else {
-        personImage.src = 'img/logos/fikit.png';
+        personImage.src = 'img/icons/profilePicture.svg';
     }
-    personImage.onerror = function(){
-        personImage.src = 'img/logos/fikit.png';
+
+    personImage.onerror = function() {
+        personImage.src = 'img/icons/profilePicture.svg';
     }
+
 
     if (person.link && person.link !== undefined && person.link !== "") {
         const personLink = document.createElement("a");
@@ -180,9 +184,10 @@ function getSittande(){
 }
 
 
-getAllPatetos();
-getSittande();
-
+document.addEventListener('DOMContentLoaded', function() {
+    getAllPatetos();
+    getSittande();
+});
 
 
 

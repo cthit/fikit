@@ -72,7 +72,7 @@ function postCreated() {
     createPostTitle.value = '';
     createPostDescription.value = '';
     createPostImageInput.value = '';     
-    createPostPreviewImage.src = '../img/placeholderPreview.svg';
+    createPostPreviewImage.src = '../img/icons/image.svg';
 }
 
 createPostSave.addEventListener('click', () => {

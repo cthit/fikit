@@ -47,6 +47,8 @@ function createStartupFiles() {
   });
 }  
 
+createStartupFiles();
+
 
 
 // LOGIN SYSTEM
@@ -121,7 +123,7 @@ function saveAdminKey(adminKey, username) {
   adminKeys.push(adminKeyData);
 
   // Write the updated admin keys array back to the file
-  fs.writeFileSync(pathtoadmin, JSON.stringify(adminKeys, null, 2));
+  fs.writeFileSync(pathToAdminkeysFile, JSON.stringify(adminKeys, null, 2));
 }
 
 export function isAdminKeyValid(adminKey) {

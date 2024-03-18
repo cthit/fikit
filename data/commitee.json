@@ -2,6 +2,7 @@
     "name": "FikIT",
     "logo": "img/logos/fikit23.png",
     "established": "2017",
+    "fallbackProfileImage": "img/logos/fikit.pfng",
     "socialMedia": [
         {
             "name": "Instagram",
