@@ -36,14 +36,13 @@ app.use('/api/commitee', commiteeRouter)
 
 
 function createStartupFiles() {
-  if (!fs.existsSync(dataFolderPath + pathToCommiteeFile)) throw new Error('Commitee file not found');
+  if (!fs.existsSync(pathToCommiteeFile)) throw new Error('Commitee file not found');
   
   if (!fs.existsSync(dataFolderPath)) fs.mkdirSync(dataFolderPath);
 
   dataFiles.forEach(file => {
-    const filePath = dataFolderPath + file;
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, '[]');
+    if (!fs.existsSync(file)) {
+      fs.writeFileSync(file, '[]');
     }
   });
 }  
