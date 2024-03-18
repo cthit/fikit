@@ -8,11 +8,9 @@ import { validateJSONPost, validateJSONPatetYear, validateJSONPerson } from './j
 import { addImage } from './imgHandler.js';
 import { isAdminKeyValid, getUsernameFromAdminKey } from '../server.js'
 
+import {pathToPatetosFile, pathToPostsFile, pathToPatetosImages} from '../server.js';
 
 
-const pathToPatetosImages = "public/img/profileImages";
-const pathToPostsFile = "public/posts.json";
-const pathToPatetosFile = "patetos.json";
 
 function createRandomSuffix() {
 	return Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -43,11 +41,11 @@ backRouter.post('/removePost', (req, res) => {
 
 	let postToRemove = req.body.post;
 
-	let allPosts = fs.readFileSync('public/posts.json');
+	let allPosts = fs.readFileSync(pathToPostsFile);
 	allPosts = JSON.parse(allPosts);
 	allPosts = allPosts.filter(post => post.id !== postToRemove.id);
 
-	fs.writeFileSync('public/posts.json', JSON.stringify(allPosts, null, 2));
+	fs.writeFileSync(pathToPostsFile, JSON.stringify(allPosts, null, 2));
 
 	// Remove the corresponding image file
 	const imagePath = path.join('public', 'img', 'postImages', postToRemove.imageName);
@@ -57,7 +55,7 @@ backRouter.post('/removePost', (req, res) => {
 });
 
 backRouter.get('/getPosts', (req, res) => {
-	let activePosts = fs.readFileSync('public/posts.json');
+	let activePosts = fs.readFileSync(pathToPostsFile);
 	activePosts = JSON.parse(activePosts);
 	res.status(200).send(activePosts);
 });
@@ -122,11 +120,10 @@ backRouter.post('/deletePerson', (req, res) => {
 
 
 
-backRouter.post('/updatePerson', (req, res) => {
-	// if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
-
-	
+backRouter.post('/updatePerson', (req, res) => {	
     uploadProfileImage(req, res, async function (err) {
+		if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
+
         if (err instanceof multer.MulterError) {
             return res.status(500).json({ error: err.message });
         } else if (err) {

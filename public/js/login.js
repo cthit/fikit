@@ -1,5 +1,4 @@
 
-const loginButton = document.getElementById('openLoginButton');
 const loginDiv = document.getElementById('loginDiv');
 const submitLoginButton = document.getElementById('submitLoginButton');
 const openCreatePostButton = document.getElementById('openCreatePostButton');
@@ -14,16 +13,9 @@ let username = null;
 
 
 
-loginButton.addEventListener('click', () => {
-    if (!isLoggedIn) {
-        loginDiv.classList.remove('hidden');
-    } else {
-        logout();
-    }
-});
-
-
 function logout() {
+    const loginButton = document.getElementById('openLoginButton');
+
     isLoggedIn = false;
     adminKey = null;
     localStorage.removeItem('adminKey');
@@ -92,6 +84,8 @@ function testAdminKeyOnLoad() {
 
 
 function userIsLoggedIn(){
+    const loginButton = document.getElementById('openLoginButton');
+
     isLoggedIn = true;
     loginDiv.classList.add('hidden');   
     

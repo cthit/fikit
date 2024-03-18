@@ -32,6 +32,9 @@ body {
     padding-bottom: 4rem;
 }
 
+body * {
+    max-width: 100vw;
+}
 
 
 h1 {
@@ -58,11 +61,6 @@ header {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
-
-header .pageTitle {
-    display: flex;
-    align-items: center;
-    justify-content: center;}
 
 header h1 {
     font-size: 4rem;
@@ -98,15 +96,28 @@ nav {
     margin-inline: auto;
 }
 
-nav a {
-    text-decoration: none;
-    color: grey;
+.mainNav a {
+    color: #808080;
+
     font-family: 'Protest Revolution', sans-serif;
     font-weight: 400;
     font-size: 1.5rem;
+    text-decoration: none;
 
+    padding: .3rem;
+    border-radius: .2rem;
+
+    transition: all .3s ease;
 }
 
+.mainNav a:hover {
+    border: .1rem dashed rgb(193, 186, 186);
+
+    transform: scale(0.95);
+
+
+    transition: transform .3s ease;
+}
 
 section>h2 {
     font-size: 3rem;

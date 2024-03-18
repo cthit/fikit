@@ -126,13 +126,17 @@ footer {
     flex: 2.5;
 }
 
+/* .personLink {
+    color: #1e1e98;
+} */
+
+
 .yearButtonGroup {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 1rem
-
 }
 
 .addPersonDiv {

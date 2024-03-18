@@ -226,27 +226,36 @@ function createPersonDiv(person, year){
 
     if (person.imageFile) personImage.src = "/img/profileImages/" + person.imageFile;
     else personImage.src =  "/img/icons/upload.svg";
+    personImage.onerror = () => { personImage.src =  "/img/icons/upload.svg";}
+
+    personImage.alt = "Profile picture for " + person.name + " '" + person.nick + "'";
 
     personDiv.appendChild(personImage);
 
     const personName = document.createElement("input");
     personName.placeholder = "Namn";
-    personName.value = person.name;
+    personName.value = person.name || "";
     personDiv.appendChild(personName);
 
     const personNickname = document.createElement("input");
     personNickname.placeholder = "Nick";
-    personNickname.value = person.nick;
+    personNickname.value = person.nick || "";
     personDiv.appendChild(personNickname);
+
+    const personLink = document.createElement("input");
+    personLink.classList.add("personLink");
+    personLink.placeholder = "Länk";
+    personLink.value = person.link || "";
+    personDiv.appendChild(personLink);
 
     const personPost = document.createElement("input");
     personPost.placeholder = "Post";
-    personPost.value = person.post;
+    personPost.value = person.post || "";
     personDiv.appendChild(personPost);
 
     const personDescription = document.createElement("textarea");
     personDescription.placeholder = "Beskrivning";
-    personDescription.value = person.description;
+    personDescription.value = person.description || ""; 
     personDiv.appendChild(personDescription);
 
     const yearButtonGroup = document.createElement("div");
@@ -274,12 +283,11 @@ function createPersonDiv(person, year){
     });
 
 
-
-
     personUpdateButton.addEventListener("click", async () => {
         const updatedPerson = {
             id: person.id,
             name: personName.value,
+            link: personLink.value,
             nick: personNickname.value,
             post: personPost.value,
             description: personDescription.value,
@@ -295,18 +303,18 @@ function createPersonDiv(person, year){
         if (successfullUpdate) {
             flashDiv(personDiv, "green");
             personUpdateButton.classList.add("invisible");
-            [personName, personNickname, personPost, personDescription].forEach(input => {
-                input.classList.remove("changedField");
-            });
-
         } else {
             flashDiv(personDiv, "red");
-
+            personImage.src = "/img/profileImages/" + person.imageFile;
             personName.value = person.name;
             personNickname.value = person.nick;
+            personLink.value = person.link;
             personPost.value = person.post;
             personDescription.value = person.description;
         }
+        [personImage, personName, personNickname, personLink, personPost, personDescription].forEach(input => {
+            input.classList.remove("changedField");
+        });
     });
 
     personDeleteButton.addEventListener("click", async () => {
@@ -316,12 +324,21 @@ function createPersonDiv(person, year){
         }
     });
 
-    [personName, personNickname, personPost, personDescription].forEach(input => {
+    [personName, personNickname, personLink, personPost, personDescription].forEach(input => {
         input.addEventListener("input", (event) => { 
-        if (personName.value === person.name && personNickname.value === person.nick && personPost.value === person.post && personDescription.value === person.description && personImageInput.files.length === 0) {
+        if (personName.value === person.name && personNickname.value === person.nick && personLink === person.link && personPost.value === person.post && personDescription.value === person.description && personImageInput.files.length === 0) {
                 personUpdateButton.classList.add("invisible");
             }
         });
+    });
+
+    personImageInput.addEventListener("change", () => {
+        if (personImageInput.files.length > 0) {
+            personUpdateButton.classList.remove("invisible");
+            personImage.classList.add("changedField");
+        } else {
+            personImage.classList.remove("changedField");
+        }
     });
 
     personName.addEventListener("input", () => {
@@ -339,6 +356,15 @@ function createPersonDiv(person, year){
             personNickname.classList.add("changedField");
         } else {
             personNickname.classList.remove("changedField");
+        }
+    });
+
+    personLink.addEventListener("input", () => {
+        if (personLink.value !== person.link) {
+            personUpdateButton.classList.remove("invisible");
+            personLink.classList.add("changedField");
+        } else {
+            personLink.classList.remove("changedField");
         }
     });
 
@@ -560,3 +586,11 @@ function flashDiv(div, color, time = 70){
         div.style.backgroundColor = originalColor;
     }, time);
 }
+
+
+
+// setTimeout(() => {
+//     const openManagePatetosButton = document.getElementById('openManagePatetosButton');
+//     openManagePatetosButton.classList.add('hidden');
+// }, 200);
+

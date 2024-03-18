@@ -6,151 +6,177 @@ const patetosDiv = document.getElementById("patetContainerDiv");
 
 // POPULATE PATETOS DIV
 function populatePatetosDiv(years){
-  patetosDiv.innerHTML = "";
-  years.forEach(year => {
-    if (year.people.length === 0){return;} else{
-      createSinglePatetDiv(year.people, year.year, patetosDiv);
-    }
-  });
+    patetosDiv.innerHTML = "";
+    years.forEach(year => {
+        if (year.people.length === 0){return;} else{
+            createSinglePatetDiv(year.people, year.year, patetosDiv);
+        }
+    });
 }
 
 function createSinglePatetDiv(sittande, year, parentDiv) {
-  let patetDivContainer = document.createElement("div");
-  patetDivContainer.classList.add("patetDivContainer");
+    let patetDivContainer = document.createElement("div");
+    patetDivContainer.classList.add("patetDivContainer");
 
-  let yearTitle = document.createElement("h2");
-  yearTitle.textContent = year;
-  yearTitle.classList.add("yearTitle");
+    let yearTitle = document.createElement("h2");
+    yearTitle.textContent = year;
+    yearTitle.classList.add("yearTitle");
 
-  let patetDiv = document.createElement("div");
-  patetDiv.classList.add("patetDiv");
+    let patetDiv = document.createElement("div");
+    patetDiv.classList.add("patetDiv");
 
 
 
-  let leftDiv = document.createElement("div");
-  leftDiv.classList.add("patetSlide");
-  let rightDiv = document.createElement("div");
-  rightDiv.classList.add("patetSlide");
-  let amountOfPeople = 0;
+    let leftDiv = document.createElement("div");
+    leftDiv.classList.add("patetSlide");
+    let rightDiv = document.createElement("div");
+    rightDiv.classList.add("patetSlide");
+    let amountOfPeople = 0;
 
-  leftDiv.appendChild(yearTitle);
+    leftDiv.appendChild(yearTitle);
 
-  sittande.forEach(element => {
-    let person = createSittande(element);
+    sittande.forEach(element => {
+        let person = createSittande(element);
 
-    if(amountOfPeople%2 == 0){
-      leftDiv.appendChild(person);
-    } else{
-      rightDiv.appendChild(person);
-    }
-    amountOfPeople++;
-  });
-  
-  patetDiv.appendChild(leftDiv);
-  patetDiv.appendChild(rightDiv);
+        if(amountOfPeople%2 == 0){
+            leftDiv.appendChild(person);
+        } else{
+            rightDiv.appendChild(person);
+        }
+          amountOfPeople++;
+    });
+    
+    patetDiv.appendChild(leftDiv);
+    patetDiv.appendChild(rightDiv);
 
-  patetDivContainer.appendChild(patetDiv);
-  parentDiv.appendChild(patetDivContainer);
+    patetDivContainer.appendChild(patetDiv);
+    parentDiv.appendChild(patetDivContainer);
 }
 
 function createSittande(person){
-  let personDiv = document.createElement("div");
+    let personDiv = document.createElement("div");
 
-  personDiv.classList.add("person");
+    personDiv.classList.add("person");
 
-  personDiv.appendChild(createInfoImgDiv(person));
-  let postP = document.createElement("p");
-  personDiv.appendChild(postP);
-  postP.textContent = person.post;
-  postP.classList.add("postP");
+    personDiv.appendChild(createInfoImgDiv(person));
+    let postP = document.createElement("p");
+    personDiv.appendChild(postP);
+    postP.textContent = person.post;
+    postP.classList.add("postP");
 
-  return personDiv;
+    return personDiv;
 };
 
 function createInfoImgDiv(person){
-  let infoImgDiv = document.createElement("div");
+    let infoImgDiv = document.createElement("div");
 
-  let img = document.createElement("img");
-  if (person.imageFile && person.imageFile !== undefined) {
-    img.src = 'img/profileImages/' + person.imageFile;
-  } else {
-    img.src = 'img/logos/fikit.png';
-    img.style.border = "3px solid black";
+    let img = createPersonImage(person);
+    infoImgDiv.appendChild(img);
 
-  }
-  img.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
+    infoImgDiv.appendChild(createInfoDiv(person));
+    infoImgDiv.classList.add("infoImgDiv");
 
-  infoImgDiv.appendChild(img);
-
-  infoImgDiv.appendChild(createInfoDiv(person));
-  infoImgDiv.classList.add("infoImgDiv");
-
-  return infoImgDiv;
+    return infoImgDiv;
 }
 
+function createPersonImage(person){
+    const personImage = document.createElement("img");
+    personImage.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
+
+
+    if (person.imageFile && person.imageFile !== undefined) {
+        personImage.src = 'img/profileImages/' + person.imageFile;
+    } else {
+        personImage.src = 'img/logos/fikit.png';
+    }
+    personImage.onerror = function(){
+        personImage.src = 'img/logos/fikit.png';
+    }
+
+    if (person.link && person.link !== undefined && person.link !== "") {
+        const personLink = document.createElement("a");
+        personLink.href = person.link;
+
+        personLink.appendChild(personImage);
+        return personLink;
+    } else {
+        return personImage;
+    }
+}
+
+
+
 function createInfoDiv(person){
-  let infoDiv = document.createElement("div");
-  infoDiv.classList.add("infoDiv");
-  
-  let h3 = document.createElement("h3");
-  let description = document.createElement("p");
+    let infoDiv = document.createElement("div");
+    infoDiv.classList.add("infoDiv");
+    
+    let nameTitle = document.createElement("h3");
+    nameTitle.textContent = person.nick;
 
-  infoDiv.appendChild(h3);
-  infoDiv.appendChild(description);
+    if (person.link && person.link !== undefined && person.link !== "") {
+        const personLink = document.createElement("a");
+        personLink.href = person.link;
+        infoDiv.appendChild(personLink);
 
-  h3.textContent = person.nick;
-  description.textContent = person.description;
+        personLink.appendChild(nameTitle);
+    } else {
+        infoDiv.appendChild(nameTitle);
+    }
 
-  return infoDiv;
+    let description = document.createElement("p");
+    description.textContent = person.description;
+    infoDiv.appendChild(description);
+
+    return infoDiv;
 };
 
 
 function populateSittandeDiv(sittande){
-  createSinglePatetDiv(sittande, "Sittande", sittandeDiv);
+    createSinglePatetDiv(sittande, "Sittande", sittandeDiv);
 }
 
 
 
 function getAllPatetos() {
-  fetch('/api/getAllPatetos')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    populatePatetosDiv(data);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
+    fetch('/api/getAllPatetos')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+          return response.json();
+    })
+    .then(data => {
+        populatePatetosDiv(data);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 };
 
 
 function getSittande(){
-  fetch('/api/getSittande')
-  .then(response => {
-    if (response.ok) {
-      return response.json();
-    } 
-    else if (response.status === 404) {
-      return [];
-    } 
-    else {
-      throw new Error('Network response was not ok');
-    }
-  })
-  .then(data => {
-    if (data.length !== 0) {
-      populateSittandeDiv(data.people);
-    } else {
-      console.log("No sittande found");
-    }
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
+    fetch('/api/getSittande')
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } 
+        else if (response.status === 404) {
+            return [];
+        } 
+        else {
+            throw new Error('Network response was not ok');
+        }
+    })
+    .then(data => {
+      if (data.length !== 0) {
+          populateSittandeDiv(data.people);
+      } else {
+          console.log("No sittande found");
+      }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 }
 
 

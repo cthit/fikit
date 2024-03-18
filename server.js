@@ -3,6 +3,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 
 import backRouter from './backend/backendRouter.js';
+import commiteeRouter from './backend/commiteeRouter.js';
 
 dotenv.config();
 
@@ -16,18 +17,36 @@ app.use(express.static('public'));
 app.use(express.json());
 
 
+const dataFolderPath = "data/";
+export const pathToCommiteeFile = dataFolderPath + "commitee.json";
+export const pathToPatetosImages = dataFolderPath + "public/img/profileImages";
+export const pathToPostsFile = dataFolderPath + "posts.json";
+export const pathToPatetosFile = dataFolderPath + "patetos.json";
+export const pathToCredentialsFile = dataFolderPath + "credentials.json";
+const pathToAdminkeysFile = dataFolderPath + "adminKeys.json";
 
-let userCredentials = fs.readFileSync('loginCredentials.json', 'utf8');
-userCredentials = JSON.parse(userCredentials); // Parse the JSON string into an object
 
-// console.log(userCredentials);
-let allowedDevices = [];
-
-
+const dataFiles = [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile];
 
 
 // UPLOAD NEW POST
 app.use('/api', backRouter)
+app.use('/api/commitee', commiteeRouter)
+
+
+
+function createStartupFiles() {
+  if (!fs.existsSync(dataFolderPath + pathToCommiteeFile)) throw new Error('Commitee file not found');
+  
+  if (!fs.existsSync(dataFolderPath)) fs.mkdirSync(dataFolderPath);
+
+  dataFiles.forEach(file => {
+    const filePath = dataFolderPath + file;
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, '[]');
+    }
+  });
+}  
 
 
 
@@ -57,7 +76,23 @@ app.post('/testAdminKey', (req, res) => {
   }
 });
 
+function getCredentials() {
+  let credentials = fs.readFileSync(pathToCredentialsFile);
+  return JSON.parse(credentials);
+}
+
+function getAdminKeys() {
+  if (fs.existsSync(pathToAdminkeysFile)) {
+    const adminKeys = fs.readFileSync(pathToAdminkeysFile, 'utf8');
+    return JSON.parse(adminKeys);
+  }
+  else {
+    throw new Error('Adminkeys file not found');
+  }
+}
+
 function credentialsIsValid(username, pass) {
+  const userCredentials = getCredentials();
   for (const user of userCredentials) {
     if (user.name === username && user.password === pass) {
       console.log('User:', user.name, "pass:", user.password);
@@ -68,7 +103,7 @@ function credentialsIsValid(username, pass) {
 }
 
 export function getUsernameFromAdminKey(adminKey) {
-  let adminKeys = fs.readFileSync('adminKeys.json')
+  let adminKeys = getAdminKeys();
   adminKeys.forEach(key => {
     if (key.key === adminKey){
       return key.username
@@ -81,22 +116,19 @@ function saveAdminKey(adminKey, username) {
   const adminKeyData = { key: adminKey, username: username, date: currentDate };
 
   // Read existing admin keys from file, or create an empty array if the file doesn't exist
-  let adminKeys = [];
-  if (fs.existsSync('adminKeys.json')) {
-      adminKeys = JSON.parse(fs.readFileSync('adminKeys.json', 'utf8'));
-  }
+  let adminKeys = getAdminKeys();
 
   // Add the new admin key data to the array
   adminKeys.push(adminKeyData);
 
   // Write the updated admin keys array back to the file
-  fs.writeFileSync('adminKeys.json', JSON.stringify(adminKeys, null, 2));
+  fs.writeFileSync(pathtoadmin, JSON.stringify(adminKeys, null, 2));
 }
 
 export function isAdminKeyValid(adminKey) {
   const currentDate = new Date();
   const tenDaysAgo = new Date(currentDate.getTime() - (10 * 24 * 60 * 60 * 1000)); // 10 days ago
-  const adminKeys = JSON.parse(fs.readFileSync('adminKeys.json', 'utf8'));
+  const adminKeys = getAdminKeys();
 
   // Find the admin key in the adminKeys array
   const adminKeyData = adminKeys.find(keyData => keyData.key === adminKey);

@@ -23,13 +23,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 
-    width: 100%;
+    width: calc(100% - 2rem);
+    padding-inline: 1rem;
+
 }
 
-.patetDiv>div {
+.patetSlide {
     display: flex;
     flex-direction: column;
+    max-width: 50%;
 }
 
 .patetDiv>div:last-child {
@@ -56,7 +60,10 @@
 
 .person img {
     width: 10.6rem;
+    height: 100%;
     object-fit: cover;
+
+    outline: 1px solid #000;
 }
 
 .infoImgDiv {

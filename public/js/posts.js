@@ -15,10 +15,6 @@ let postParentDiv = document.getElementById("postsContainer");
 let postImageDirPath = "/img/postImages/";
 
 
-openCreatePostButton.addEventListener('click', () => { 
-    createPostDiv.classList.toggle('hidden');
-});
-
 uploadImageToPost.addEventListener('click', () => {
     createPostImageInput.click();
 });
@@ -162,6 +158,10 @@ function createPostContentDiv(post){
     postContentDiv.appendChild(h3);
     postContentDiv.appendChild(postP);
 
+    // postContentDiv.onload = () => {
+    //     postContentDiv.style.width
+    // }
+
     return postContentDiv;
 }
 
@@ -174,6 +174,7 @@ function createRemovePostButton(post){
 
     let removeImg = document.createElement("img");
     removeImg.src = "../img/icons/delete.svg";
+    removeImg.alt = "Remove post button ";
     removePostButton.appendChild(removeImg);
 
 
