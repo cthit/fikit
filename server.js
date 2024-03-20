@@ -19,8 +19,10 @@ app.use(express.json());
 
 const dataFolderPath = "data/";
 export const pathToCommiteeFile = dataFolderPath + "commitee.json";
-export const pathToPatetosImages = dataFolderPath + "public/img/profileImages";
+
+export const pathToPatetosImages = "public/img/profileImages";
 export const pathToPostImages = "public/img/postImages/";
+
 export const pathToPostsFile = dataFolderPath + "posts.json";
 export const pathToPatetosFile = dataFolderPath + "patetos.json";
 export const pathToCredentialsFile = dataFolderPath + "credentials.json";
