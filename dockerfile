@@ -2,7 +2,7 @@ FROM node:lts-slim
 WORKDIR /app 
 COPY . .
 RUN npm install
-RUN touch adminKeys.json
-RUN touch patetos.json
-RUN touch posts.json
+RUN touch data/adminKeys.json
+RUN touch data/patetos.json
+RUN touch data/posts.json
 CMD node server.js
