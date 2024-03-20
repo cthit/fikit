@@ -5,7 +5,7 @@ export const addImage = (imgData, pathToJsonFile) => {
         images = JSON.parse(images);
         images.push(imgData);
         
+        fs.writeFileSync(pathToJsonFile, JSON.stringify(images, null, 2));
         console.log("WOHO! Image added!");
-        fs.writeFileSync('public/posts.json', JSON.stringify(images, null, 2));
 }
 

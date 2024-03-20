@@ -40,20 +40,28 @@ function login() {
         body: JSON.stringify(loginCredentials)
     })
     .then(response => {
-        if (!response.ok) {
+        if (response.status === 200) {
+            data = response.json().then( (data) => {
+                adminKey = data.adminKey;
+                username = usernameInput.value;
+        
+                localStorage.setItem('adminKey', adminKey);
+                console.log("Login successful");
+        
+                userIsLoggedIn();
+            });
+
+        } else if (response.status === 401) {
+            [usernameInput, passwordInput, submitLoginButton].forEach(input => {
+                input.classList.add('error');
+                setTimeout(() => {
+                    input.classList.remove('error');
+                }, 100);
+            });
+
+        } else if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
-    })
-    .then(data => {
-        adminKey = data.adminKey;
-        username = usernameInput.value;
-
-        localStorage.setItem('adminKey', adminKey);
-        console.log("Login successful");
-
-        userIsLoggedIn();
-        
     })
 }
 

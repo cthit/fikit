@@ -3,7 +3,7 @@ public/img/postImages/*
 public/img/profileImages/*
 
 
-*.json
+data/*.json
 
 .env
 

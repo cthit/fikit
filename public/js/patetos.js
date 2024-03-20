@@ -9,32 +9,41 @@ function populatePatetosDiv(years){
     patetosDiv.innerHTML = "";
     years.forEach(year => {
         if (year.people.length === 0){return;} else{
-            createSinglePatetDiv(year.people, year.year, patetosDiv);
+            createSinglePatetDiv(patetosDiv, year.people, year.year);
         }
     });
 }
 
-function createSinglePatetDiv(sittande, year, parentDiv) {
+function createSinglePatetDiv(parentDiv, sittande, year) {
     let patetDivContainer = document.createElement("div");
     patetDivContainer.classList.add("patetDivContainer");
-
-    let yearTitle = document.createElement("h2");
-    yearTitle.textContent = year;
-    yearTitle.classList.add("yearTitle");
 
     let patetDiv = document.createElement("div");
     patetDiv.classList.add("patetDiv");
 
+    if (year) {
+        let yearTitle = document.createElement("h3");
+        yearTitle.textContent = year;
+        yearTitle.classList.add("yearTitle");
+        patetDiv.appendChild(yearTitle);
+    }
 
+
+
+
+    const patetSliderDiv = document.createElement("div");
+    patetSliderDiv.classList.add("patetSliderDiv");
+    patetDiv.appendChild(patetSliderDiv);
 
     let leftDiv = document.createElement("div");
     leftDiv.classList.add("patetSlide");
     let rightDiv = document.createElement("div");
     rightDiv.classList.add("patetSlide");
+
+    patetSliderDiv.appendChild(leftDiv);
+    patetSliderDiv.appendChild(rightDiv);
+
     let amountOfPeople = 0;
-
-    leftDiv.appendChild(yearTitle);
-
     sittande.forEach(element => {
         let person = createSittande(element);
 
@@ -46,9 +55,6 @@ function createSinglePatetDiv(sittande, year, parentDiv) {
           amountOfPeople++;
     });
     
-    patetDiv.appendChild(leftDiv);
-    patetDiv.appendChild(rightDiv);
-
     patetDivContainer.appendChild(patetDiv);
     parentDiv.appendChild(patetDivContainer);
 }
@@ -81,6 +87,8 @@ function createInfoImgDiv(person){
 
 function createPersonImage(person){
     const personImage = document.createElement("img");
+    personImage.classList.add("personImage");
+
     personImage.alt = "Profile picture for" + person.name + '"' + person.nick + '"';
 
     
@@ -95,6 +103,11 @@ function createPersonImage(person){
     personImage.onerror = function() {
         personImage.src = 'img/icons/profilePicture.svg';
     }
+
+    personImage.onerror = function() {
+        personImage.src = 'img/icons/profilePicture.svg';
+    }
+
 
 
     if (person.link && person.link !== undefined && person.link !== "") {
@@ -114,7 +127,7 @@ function createInfoDiv(person){
     let infoDiv = document.createElement("div");
     infoDiv.classList.add("infoDiv");
     
-    let nameTitle = document.createElement("h3");
+    let nameTitle = document.createElement("h4");
     nameTitle.textContent = person.nick;
 
     if (person.link && person.link !== undefined && person.link !== "") {
@@ -136,7 +149,7 @@ function createInfoDiv(person){
 
 
 function populateSittandeDiv(sittande){
-    createSinglePatetDiv(sittande, "Sittande", sittandeDiv);
+    createSinglePatetDiv(sittandeDiv, sittande);
 }
 
 

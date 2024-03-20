@@ -47,14 +47,20 @@ for (const button of closeButtons) {
 function createHeader() {
     let header = document.createElement('header');
 
+    const headerLink = document.createElement('a');
+    headerLink.classList.add('headerLink');
+    headerLink.href = '/';
+    
     let logo = document.createElement('img');
     logo.src = committeeInfo.logo;
     logo.alt = 'Logo of ' + committeeInfo.name;
-    header.appendChild(logo);
+    headerLink.appendChild(logo);
 
     let title = document.createElement('h1');
     title.textContent = committeeInfo.name;
-    header.appendChild(title);
+    headerLink.appendChild(title);
+
+    header.appendChild(headerLink);
 
 
     const optionsMenu = createOptionsMenu();

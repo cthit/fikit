@@ -1,5 +1,8 @@
 /* ------- PATETER ------- */
 
+h2 {
+    text-align: center;
+}
 
 .patetSection {
     display: flex;
@@ -19,37 +22,50 @@
     margin-bottom: 5rem;
 }
 
+.patetDivContainer h3 {
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    
+    margin: 0;
+    margin-bottom: 2rem;
+}
+
 .patetDiv {
+    padding-inline: 1rem;
+}
+
+.patetSliderDiv {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-evenly;
     flex-wrap: wrap;
-
-    width: calc(100% - 2rem);
-    padding-inline: 1rem;
-
+    gap: 9rem;
 }
 
 .patetSlide {
+    /* background: green; */
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    max-width: 50%;
-}
-
-.patetDiv>div:last-child {
-    margin-top: 7rem;
 }
 
 .person {
     font-size: 1rem;
 
+    /* background: blue;     */
+
     max-width: min-content;
     height: 14rem;
-    padding:1rem;
     margin-top: 4rem;
 }
+.person:first-of-type {
+    margin-top: 0;
+}
 
-.person h3 {
+.person h4 {
     font-family: "jacques francois shadow";
     font-weight: 400;
     font-size: 3rem;
@@ -58,10 +74,11 @@
     margin: 0;
 }
 
-.person img {
+.person .personImage {
     width: 10.6rem;
+    min-width: 10.6rem;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;  
 
     outline: 1px solid #000;
 }
@@ -70,6 +87,8 @@
     display: flex;
     flex-direction: row;
 
+    overflow: hidden;
+    padding: .1rem; /* small space so that image outline is shown */
     height: 11.5rem;
 }
 
@@ -79,8 +98,9 @@
 
 .infoDiv p {
     margin: 0;
-    max-width: 15.2rem;
     min-width: 15.2rem;
+    /* background: purple; */
+
 }
 
 .person .postP {
@@ -90,4 +110,17 @@
     margin-top: .5rem;
     font-family: "jacques francois shadow";
     font-size: 1.3rem;
+}
+
+
+
+
+@media screen and (max-width: 1000px){
+    .patetSliderDiv {
+        gap: 0;
+        flex-direction: column;
+    }
+    .patetSlide {
+        margin-top: 0 !important;
+    }
 }

@@ -6,7 +6,7 @@ import * as path from 'path';
 
 import { validateJSONPost, validateJSONPatetYear, validateJSONPerson } from './jsonValidator.js';
 import { addImage } from './imgHandler.js';
-import { isAdminKeyValid, getUsernameFromAdminKey } from '../server.js'
+import { isAdminKeyValid, getUsernameFromAdminKey, pathToCredentialsFile } from '../server.js'
 
 import {pathToPatetosFile, pathToPostsFile, pathToPatetosImages} from '../server.js';
 
@@ -237,6 +237,7 @@ function sortYears(patetos) {
 
 	return patetos;
 }
+
 
 
 

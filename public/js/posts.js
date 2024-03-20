@@ -62,7 +62,7 @@ function uploadNewPost(post) {
         }
         return response;
     })
-    .then(posts => {
+    .then( () => {
         updateNewsPost();
     })
 }
@@ -133,6 +133,10 @@ function createPost(post, parentDiv){
             postDiv.style.backgroundSize = 'contain';
             postDiv.style.backgroundRepeat = 'no-repeat';
         }
+    });
+
+    postDiv.addEventListener("click", () => {
+        showExpandedPost(post);
     });
           
 
@@ -228,4 +232,46 @@ function toggleRemovePostButton(){
             button.classList.add("hidden");
         }
     }
+}
+
+
+function showExpandedPost(post){
+    let primaryImagePath = postImageDirPath + post.imageName;
+
+    const shadowBox = document.createElement('div');
+    shadowBox.classList.add('shadowBox');
+    shadowBox.addEventListener('click', () => {
+        shadowBox.remove();
+    });
+
+    const expandedDiv = document.createElement('div')
+    expandedDiv.classList.add('expandedDiv');
+
+    const image = document.createElement('img');
+    image.classList.add('expandedPostImage');
+    image.src = primaryImagePath;
+    image.alt = post.title;
+    expandedDiv.appendChild(image);
+
+
+
+    const expandedPostDiv = document.createElement('div');
+    expandedPostDiv.classList.add('expandedPostDiv', "postContentDiv");
+    shadowBox.appendChild(expandedPostDiv);
+
+    const h3 = document.createElement('h3');
+    h3.textContent = post.title;
+    expandedPostDiv.appendChild(h3);
+
+    const p = document.createElement('p');
+    p.textContent = post.description;
+    expandedPostDiv.appendChild(p);
+
+    expandedDiv.appendChild(expandedPostDiv);
+
+
+
+    shadowBox.appendChild(expandedDiv);
+    
+    document.body.appendChild(shadowBox);
 }

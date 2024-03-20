@@ -28,6 +28,7 @@ const pathToAdminkeysFile = dataFolderPath + "adminKeys.json";
 
 const dataFiles = [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile];
 
+const adminKeysLifeTime = 10 * 24 * 60 * 60 * 1000; // 10 days in milliseconds
 
 // UPLOAD NEW POST
 app.use('/api', backRouter)
@@ -53,6 +54,8 @@ createStartupFiles();
 
 // LOGIN SYSTEM
 app.post('/login', (req, res) => {
+  removeUnvalidAdminKeys();
+  
   const username = req.body.username; // Extract username from request body
   const password = req.body.password; // Extract password from request body
   console.log('Username:', username);
@@ -128,7 +131,7 @@ function saveAdminKey(adminKey, username) {
 
 export function isAdminKeyValid(adminKey) {
   const currentDate = new Date();
-  const tenDaysAgo = new Date(currentDate.getTime() - (10 * 24 * 60 * 60 * 1000)); // 10 days ago
+  const tenDaysAgo = new Date(currentDate.getTime() - (adminKeysLifeTime));
   const adminKeys = getAdminKeys();
 
   // Find the admin key in the adminKeys array
@@ -142,6 +145,45 @@ export function isAdminKeyValid(adminKey) {
   return savedDate >= tenDaysAgo;
 }
 
+
+function removeUnvalidAdminKeys() {
+  const currentDate = new Date();
+  const tenDaysAgo = new Date(currentDate.getTime() - (adminKeysLifeTime));
+  let adminKeys = getAdminKeys();
+
+  adminKeys = adminKeys.filter(keyData => {
+    const savedDate = new Date(keyData.date);
+    return savedDate >= tenDaysAgo;
+  });
+
+  fs.writeFileSync(pathToAdminkeysFile, JSON.stringify(adminKeys, null, 2));
+}
+
+backRouter.post('/updateUserCredentials', (req, res) => {
+	if (!isAdminKeyValid(req.body.adminKey)) return res.status(403).send("Adminkey not valid");
+
+	const newUsername = req.body.username;
+	const newPassword = req.body.password;
+
+	let adminKeys = fs.readFileSync(pathToAdminkeysFile);
+  adminKeys = JSON.parse(adminKeys);
+  adminKeys.filter(keyData => keyData.key !== req.body.adminKey);
+  fs.writeFileSync(pathToAdminkeysFile, JSON.stringify(adminKeys, null, 2));
+  
+  let credentials = fs.readFileSync(pathToCredentialsFile);
+	credentials = JSON.parse(credentials);
+
+  try {
+    credentials.find(user => user.name === getUsernameFromAdminKey()).password = newPassword;
+    credentials.find(user => user.name === getUsernameFromAdminKey).username = newUsername;
+  } catch (error) {
+    return res.status(404).send("User not found");
+  }
+
+
+	fs.writeFileSync(pathToCredentialsFile, JSON.stringify(credentials, null, 2));
+	res.send(200).send("Credentials updated successfully!");
+});
 
 
 

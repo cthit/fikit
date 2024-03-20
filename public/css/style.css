@@ -52,14 +52,22 @@ p {
 
 header {
     background: rgb(240, 240, 240);
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     position: relative;
 
+    width: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
+
+header .headerLink {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 header h1 {
@@ -119,7 +127,7 @@ nav {
     transition: transform .3s ease;
 }
 
-section>h2 {
+h2 {
     font-size: 3rem;
     margin-bottom: 3rem;
     font-family: "Protest Revolution", sans-serif;
@@ -218,3 +226,26 @@ section>h2 {
     cursor: pointer;
     opacity: 100;
 }
+
+.error {
+    background: #ce2e2e;
+}
+
+.shadowBox {
+    background: #000000C0;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 1010;
+}
+
+
