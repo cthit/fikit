@@ -1,0 +1,24 @@
+{
+    "name": "FikIT",
+    "logo": "img/logos/fikit23.png",
+    "established": "2017",
+    "fallbackProfileImage": "img/logos/fikit.png",
+    "socialMedia": [
+        {
+            "name": "Instagram",
+            "url": "https://www.instagram.com/fikit_chalmers/",
+            "logo": "img/logos/instagram.png"
+        },
+        {
+            "name": "wikIT",
+            "url": "https://wiki.chalmers.it/index.php/FikIT",
+            "logo": "img/logos/it.svg"
+        }
+    ],
+    "contact": [
+        {
+            "type": "email",
+            "value": "fikit@chalmers.it"
+        }
+    ]
+}

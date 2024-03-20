@@ -3,7 +3,9 @@ public/img/postImages/*
 public/img/profileImages/*
 
 
-data/*.json
+data/adminKeys.json
+data/patetos.json
+data/posts.json
 
 .env
 
