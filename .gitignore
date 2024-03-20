@@ -46,8 +46,8 @@ coverage/
 build/
 
 # Docker
-Dockerfile
-docker-compose.yml
+# Dockerfile
+# docker-compose.yml
 
 # VSCode settings
 .vscode/

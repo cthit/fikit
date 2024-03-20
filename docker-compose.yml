@@ -1,0 +1,8 @@
+version: "1"
+services:
+  fikit:
+    image: ghcr.io/cthit/fikit:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/app/data

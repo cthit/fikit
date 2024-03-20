@@ -1,0 +1,6 @@
+data/adminKeys.json
+data/patetos.json
+data/posts.json
+
+public/img/postImages/*
+public/profileImages/*

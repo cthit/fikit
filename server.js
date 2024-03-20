@@ -20,6 +20,7 @@ app.use(express.json());
 const dataFolderPath = "data/";
 export const pathToCommiteeFile = dataFolderPath + "commitee.json";
 export const pathToPatetosImages = dataFolderPath + "public/img/profileImages";
+export const pathToPostImages = "public/img/postImages/";
 export const pathToPostsFile = dataFolderPath + "posts.json";
 export const pathToPatetosFile = dataFolderPath + "patetos.json";
 export const pathToCredentialsFile = dataFolderPath + "credentials.json";
@@ -39,6 +40,8 @@ app.use('/api/commitee', commiteeRouter)
 function createStartupFiles() {
   if (!fs.existsSync(pathToCommiteeFile)) throw new Error('Commitee file not found');
   
+  if (!fs.existsSync(pathToPatetosImages)) fs.mkdirSync(pathToPatetosImages);
+  if (!fs.existsSync(pathToPostImages)) fs.mkdirSync(dataFolderPath);
   if (!fs.existsSync(dataFolderPath)) fs.mkdirSync(dataFolderPath);
 
   dataFiles.forEach(file => {
