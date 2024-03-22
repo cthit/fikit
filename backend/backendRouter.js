@@ -172,6 +172,8 @@ backRouter.post('/addYear', (req, res) => {
 	
 	allPatetos.push(newYear);
 
+	sortYears(allPatetos);
+
 	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
 
 	res.status(200).send("Year added successfully!");
@@ -205,6 +207,8 @@ backRouter.post('/updateYear', (req, res) => {
 
 	Object.assign(year, updatedYear);
 
+	sortYears(allPatetos);
+
 	fs.writeFileSync(pathToPatetosFile, JSON.stringify(allPatetos, null, 2));
 
 	res.status(200).send("Year updated successfully!");
@@ -213,7 +217,7 @@ backRouter.post('/updateYear', (req, res) => {
 
 
 
-function sortYears(patetos) {
+function 	sortYears(patetos) {
 	patetos.sort((a, b) => {
 		const yearA = parseInt(a.year);
 		const yearB = parseInt(b.year);
