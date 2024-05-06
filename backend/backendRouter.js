@@ -217,7 +217,7 @@ backRouter.post('/updateYear', (req, res) => {
 
 
 
-function 	sortYears(patetos) {
+function sortYears(patetos) {
 	patetos.sort((a, b) => {
 		const yearA = parseInt(a.year);
 		const yearB = parseInt(b.year);

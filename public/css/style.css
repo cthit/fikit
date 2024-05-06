@@ -95,10 +95,10 @@ header img {
 nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+    gap: 1.2rem;
 
-    width: 40%;
     height: 3rem;
     margin-bottom: 3rem;
     margin-inline: auto;
@@ -173,13 +173,15 @@ h2 {
     background: rgb(237, 235, 235);
 
     position: fixed;
-    top: calc(50% - 20vw/2);
-    left: calc(50% - 30vw/2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     height: 20vw;
     width: 30vw;
     min-height: 20rem;
     min-width: 30rem;
+    max-width: min-content;
 
     outline: .4rem solid black;
     z-index: 1000;
@@ -249,3 +251,13 @@ h2 {
 }
 
 
+
+
+@media screen and (max-width: 500px) {
+
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+}
