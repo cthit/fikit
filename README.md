@@ -8,6 +8,7 @@
 ![Github licence](https://img.shields.io/badge/licence-CC_BY_NC_SA_4.0-blueviolet?style=flat-square)
 </a>
 
+<!--
 ## HowTo Setup
 
 start by cloning the repo
@@ -21,6 +22,7 @@ start the node server
 node server.js
 ```
 
+-->
 
 
 
