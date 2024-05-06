@@ -29,8 +29,6 @@ export const pathToCredentialsFile = dataFolderPath + "credentials.json";
 const pathToAdminkeysFile = dataFolderPath + "adminKeys.json";
 
 
-const dataFiles = [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile];
-
 const adminKeysLifeTime = 10 * 24 * 60 * 60 * 1000; // 10 days in milliseconds
 
 // UPLOAD NEW POST
@@ -39,21 +37,21 @@ app.use('/api/commitee', commiteeRouter)
 
 
 
-function createStartupFiles() {
-  if (!fs.existsSync(pathToCommiteeFile)) throw new Error('Commitee file not found');
-  
-  if (!fs.existsSync(pathToPatetosImages)) fs.mkdirSync(pathToPatetosImages);
-  if (!fs.existsSync(pathToPostImages)) fs.mkdirSync(dataFolderPath);
-  if (!fs.existsSync(dataFolderPath)) fs.mkdirSync(dataFolderPath);
-
-  dataFiles.forEach(file => {
-    if (!fs.existsSync(file)) {
-      fs.writeFileSync(file, '[]');
-    }
+export async function initialize_files(directories, files) {
+  directories.forEach((path) => {
+      if (!fs.existsSync(path)) {
+          fs.mkdirSync(path);
+      }
   });
-}  
 
-createStartupFiles();
+  files.forEach((path) => {
+      if (!fs.existsSync(path)) {
+          fs.writeFileSync(path, JSON.stringify([], null, 2));
+      }
+  });
+}
+
+initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile]);
 
 
 
