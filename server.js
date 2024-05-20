@@ -49,6 +49,17 @@ export async function initialize_files(directories, files) {
           fs.writeFileSync(path, JSON.stringify([], null, 2));
       }
   });
+
+  // Create credentials file if it doesn't exist
+  if (!fs.existsSync(pathToCredentialsFile)) {
+    fs.writeFileSync(pathToCredentialsFile, JSON.stringify([
+      {
+        "name": process.env.MAIN_USERNAME || "Göken",
+        "password": process.env.MAIN_USER_PASSWORD || "1234",
+        "id": process.env.MAIN_USER_ID || "1"
+      }
+    ], null, 2));
+  }
 }
 
 async function initiate_commitee_file() {
@@ -80,21 +91,9 @@ async function initiate_commitee_file() {
   }
 }
 
-async function initiate_credentials_file() {
-  if (!fs.existsSync(pathToCredentialsFile)) {
-    fs.writeFileSync(pathToCredentialsFile, JSON.stringify([
-      {
-        "name": process.env.MAIN_USERNAME || "Göken",
-        "password": process.env.MAIN_USER_PASSWORD || "1234",
-        "id": process.env.MAIN_USER_ID || "1"
-      }
-    ], null, 2));
-  }
-}
 
 initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToAdminkeysFile]);
 initiate_commitee_file();
-initiate_credentials_file();
 
 
 // LOGIN SYSTEM
