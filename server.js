@@ -51,8 +51,50 @@ export async function initialize_files(directories, files) {
   });
 }
 
-initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile]);
+async function initiate_commitee_file() {
+  if (!fs.existsSync(pathToCommiteeFile)) {
+    fs.writeFileSync(pathToCommiteeFile, JSON.stringify({
+      "name": "FikIT",
+      "logo": "img/logos/fikit23.png",
+      "established": "2017",
+      "fallbackProfileImage": "img/logos/fikit.png",
+      "socialMedia": [
+          {
+              "name": "Instagram",
+              "url": "https://www.instagram.com/fikit_chalmers/",
+              "logo": "img/logos/instagram.png"
+          },
+          {
+              "name": "wikIT",
+              "url": "https://wiki.chalmers.it/index.php/FikIT",
+              "logo": "img/logos/it.svg"
+          }
+      ],
+      "contact": [
+          {
+              "type": "email",
+              "value": "fikit@chalmers.it"
+          }
+      ]
+  }, null, 2));
+  }
+}
 
+function initiate_credentials_file() {
+  if (!fs.existsSync(pathToCredentialsFile)) {
+    fs.writeFileSync(pathToCredentialsFile, JSON.stringify([
+      {
+        "name": process.env.MAIN_USERNAME || "Göken",
+        "password": process.env.MAIN_USER_PASSWORD || "1234",
+        "id": process.env.MAIN_USER_ID || "1"
+      }
+    ], null, 2));
+  }
+}
+
+initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile]);
+initiate_commitee_file();
+initiate_credentials_file();
 
 
 // LOGIN SYSTEM

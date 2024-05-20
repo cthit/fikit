@@ -1,6 +1,4 @@
-data/adminKeys.json
-data/patetos.json
-data/posts.json
+data/*
 
 public/img/postImages/*
 public/profileImages/*
