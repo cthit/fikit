@@ -92,7 +92,7 @@ async function initiate_credentials_file() {
   }
 }
 
-initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToCredentialsFile, pathToAdminkeysFile]);
+initialize_files([dataFolderPath, pathToPatetosImages, pathToPostImages], [pathToPostsFile, pathToPatetosFile, pathToAdminkeysFile]);
 initiate_commitee_file();
 initiate_credentials_file();
 
