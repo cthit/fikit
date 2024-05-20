@@ -85,7 +85,7 @@ function createOptionsMenu() {
     if (document.title !== 'FikIT - Hantera Pateter') {
         let openManagePatetosButton = document.createElement('a');
         openManagePatetosButton.id = 'openManagePatetosButton';
-        openManagePatetosButton.href = 'managepatetos.html';
+        openManagePatetosButton.href = 'managePatetos.html';
         openManagePatetosButton.classList.add('adminButton', 'hidden', 'button');
         openManagePatetosButton.textContent = 'Hantera pateter';
         optionsMenu.appendChild(openManagePatetosButton);

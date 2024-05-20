@@ -126,6 +126,7 @@ app.post('/testAdminKey', (req, res) => {
 
 function getCredentials() {
   let credentials = fs.readFileSync(pathToCredentialsFile);
+  console.log(credentials);
   return JSON.parse(credentials);
 }
 
