@@ -80,7 +80,7 @@ async function initiate_commitee_file() {
   }
 }
 
-function initiate_credentials_file() {
+async function initiate_credentials_file() {
   if (!fs.existsSync(pathToCredentialsFile)) {
     fs.writeFileSync(pathToCredentialsFile, JSON.stringify([
       {
